@@ -10,11 +10,7 @@
   
 	"title_bar": {
 	    "app_title": "Drops In The Ocean",
-<<<<<<< HEAD
 	    "back_color": "images/title_bar.png",
-=======
-	    "back_color": [0.004878, 0.004854, 0.004785, 1],
->>>>>>> origin/master
 	    "text_color": [1, 1, 1, 1],
 	    "button_size": 0.125,
 	    "home_icon": "images/home_icon.png",

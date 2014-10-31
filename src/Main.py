@@ -31,10 +31,7 @@ kivy.require('1.8.0')
 from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.widget import Widget
-<<<<<<< HEAD
 from kivy.uix.relativelayout import RelativeLayout
-=======
->>>>>>> origin/master
 from kivy.uix.dropdown import DropDown
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty, StringProperty
 from kivy.uix.scrollview import ScrollView
