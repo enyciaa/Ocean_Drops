@@ -1,0 +1,6 @@
+{	
+	"button_clicks": {
+    	"normal_text_color": [1, 1, 1, 1],
+    	"pressed_text_color": [1, 1, 1, 0.5]
+	}
+}

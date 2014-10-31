@@ -1,0 +1,39 @@
+{	
+	"button_clicks": {
+    	"normal_text_color": [1, 1, 1, 1],
+    	"pressed_text_color": [1, 1, 1, 0.5]
+	},
+	
+	"title_drop": {
+    	"button_height": 44
+	},
+  
+	"title_bar": {
+	    "app_title": "Drops In The Ocean",
+<<<<<<< HEAD
+	    "back_color": "images/title_bar.png",
+=======
+	    "back_color": [0.004878, 0.004854, 0.004785, 1],
+>>>>>>> origin/master
+	    "text_color": [1, 1, 1, 1],
+	    "button_size": 0.125,
+	    "home_icon": "images/home_icon.png",
+	    "settings_icon": "images/settings_icon.png"
+	},
+	
+	"scroll_menu": {
+	    "spacing": 20,
+	    "padding": 20,
+	    "button_height": 100,
+	    "read_size": 0.5,
+	    "background": "Images/Could_Background.png",
+	    "footer": "A Boundless Helping Hand",
+	    "mini_apps": 1,
+	    "read_text": "Read More",
+	    "three_text": "Three Drops"
+	},
+	
+	"main_menu": {
+    	"container_height": 20
+	}    
+}
