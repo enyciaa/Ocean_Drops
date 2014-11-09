@@ -21,7 +21,7 @@ Widget Tree
 from kivy.core.window import Window
 from kivy.app import Builder
 from kivy.uix.widget import Widget
-from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty
 import Utility
 
@@ -46,7 +46,7 @@ class Sent(Screen):
     pass
             
         
-class ReadMore(Widget): 
+class ReadMore(Screen): 
     pass
 
 
@@ -80,15 +80,13 @@ class ThreeDrops(Widget):
         start_screen = StartScreen(name = 'StartScreen')
         three = Three(name = 'Three')
         sent = Sent(name = 'Sent')   
+        read_more = ReadMore(name = 'ReadMore')  
         #Add screens to main app screen manager 
-        self.sm = ScreenManager(transition = FadeTransition()) 
+        self.sm = ScreenManager(transition = SlideTransition()) 
         self.sm.add_widget(start_screen)
         self.sm.add_widget(three)
         self.sm.add_widget(sent)
+        self.sm.add_widget(read_more)
         self.mini_app = self.sm
-    
-    #Opens three drops read more    
-    def read_open(self):
-        self.read_more = ReadMore() 
         
         

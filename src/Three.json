@@ -43,7 +43,8 @@
 	    "quote_name": "~Doug Henning",
 	    "quote_valign": "bottom",
 	    "quote_name_valign": "top",
-	    "spacing": 20
+	    "spacing": 20,
+	    "read_button": "Images/td_read_button.png"
 	},
 	
 	"three": {

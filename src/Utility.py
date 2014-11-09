@@ -20,14 +20,14 @@ class ButtonClicks(Image, ButtonBehavior):
             "but_001": 'app.main_menu.title_bar.home_press()',
             "but_002": 'app.main_menu.title_bar.open_drop_down(button)',
             "but_003": 'app.main_menu.container.scroll_menu.three_drops()',
-            "but_004": 'app.main_menu.container.scroll_menu.three_drops_read()',
+            "but_004": "app.three_drops.sm.current = 'ReadMore'",
             "but_005": 'app.main_menu.container.add_scroll_menu()',
             "but_006": "app.three_drops.sm.current = 'Three'",
             "but_007": "app.three_drops.sm.current = 'StartScreen'",
             "but_008": "app.three_drops.sm.current = 'Sent'",
             "but_009": "app.three_drops.sm.current = 'Three'",
             "but_010": 'app.main_menu.container.add_scroll_menu()',
-            "but_011": 'app.main_menu.container.add_scroll_menu()'
+            "but_011": "app.three_drops.sm.current = 'StartScreen'"
         }
     
     #when button is clicked text becomes translucent        

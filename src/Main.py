@@ -4,10 +4,6 @@ Added
 To Do
 -UI layout
 -Graphics
-<<<<<<< HEAD
-=======
--why isn't canvas staying attached to title bar?
->>>>>>> origin/master
 
 Future
 -Make scroll widget do a for loop of adding buttons for each mini_app in the file to shorten code
@@ -104,15 +100,6 @@ class ScrollMenu(ScrollView):
         three_drops.open()                              #creates the mini_app object
         container.mini_app_box = three_drops.mini_app     #takes the mini_app object variable from the mini_app
         container.add_mini_app()                          #adds the mini_app to the container
-    
-    def three_drops_read(self):  
-        three_drops = app.three_drops
-        container = app.main_menu.container
-        
-        self.change_title(three_drops) 
-        three_drops.read_open()  
-        container.mini_app_box = three_drops.read_more
-        container.add_mini_app()
         
 
 #Any new screens are added to the container widget

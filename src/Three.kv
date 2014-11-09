@@ -52,6 +52,12 @@
 		Text:
 			valign: app.td_layout["start_screen"]["quote_name_valign"]
 			text: app.td_layout["start_screen"]["quote_name"]
+		ButtonClicks:
+			source: app.td_layout["start_screen"]["read_button"]
+			on_touch_up: 
+				button_identifier = 'but_004'
+				cond1 = self.collide_point(*args[1].pos)                
+				if cond1: self.click_up(self, button_identifier) 	
 		Blank_Bottom:				
 			
 	###Buttons

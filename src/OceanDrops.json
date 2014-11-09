@@ -1,4 +1,7 @@
-{	
+{	"ocean_drops": {
+    	"heading_1": "Fonts/Niconne-Regular.ttf"
+	},
+	
 	"button_clicks": {
     	"normal_text_color": [1, 1, 1, 1],
     	"pressed_text_color": [1, 1, 1, 0.5]
@@ -9,27 +12,30 @@
 	},
   
 	"title_bar": {
-	    "app_title": "Drops In The Ocean",
-	    "back_color": "images/title_bar.png",
+	    "app_title": "Ocean Drops",
+	    "heading_size": 23,
+	    "background": "images/title_bar.png",
 	    "text_color": [1, 1, 1, 1],
 	    "button_size": 0.125,
 	    "home_icon": "images/home_icon.png",
-	    "settings_icon": "images/settings_icon.png"
+	    "settings_icon": "images/settings_icon.png",
+	    "app_icon": "images/app_icon.png"
 	},
 	
 	"scroll_menu": {
 	    "spacing": 20,
-	    "padding": 20,
-	    "button_height": 100,
-	    "read_size": 0.5,
-	    "background": "Images/Could_Background.png",
+	    "padding_y": 20,
+	    "padding_x": 50,
+	    "button_height": 80,
+	    "background": "Images/home_background.png",
 	    "footer": "A Boundless Helping Hand",
 	    "mini_apps": 1,
-	    "read_text": "Read More",
-	    "three_text": "Three Drops"
+	    "three_button": "Images/three_drops_button.png",
+	    "description_height": 0.25,
+	    "footer_size": 21
 	},
 	
 	"main_menu": {
-    	"container_height": 20
+    	"container_height": 13
 	}    
 }
