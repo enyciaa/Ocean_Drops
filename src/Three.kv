@@ -1,32 +1,24 @@
 #kivy 1.8.0
 
 ###Templates###
-<Text@Label>
-	halign: app.td_layout["text"]["halign"]
-	valign: app.td_layout["text"]["valign"]
-    text_size: self.size
-    color: app.td_layout["three_drops"]["text_color"]
-    font_size: sp(app.td_layout["text"]["font_size"])
-    
-<Button_Template@ButtonClicks>
+<Button_Layout@RelativeLayout>
 	size_hint: None, None
-	size_x: sp(app.td_layout["button_template"]["size_x"])
-	size_y: sp(app.td_layout["button_template"]["size_y"])
-	background_color: app.td_layout["button_template"]["back_color"]
-	color: app.td_layout["three_drops"]["text_color"]
-	valign: app.td_layout["button_template"]["valign"]
-	halign: app.td_layout["button_template"]["halign"]
-    text_size: self.size	
-
-<Back_Button@Button_Template>
+	width: sp(app.td_layout["button_layout"]["width"])
+	height: sp(app.td_layout["button_layout"]["height"])
+	
+<Back_Layout@Button_Layout>
 	center_x: app.three_drops.back_x     #Goes back to main app and then to three drops
 	center_y: app.three_drops.back_y
-	text: app.td_layout["back_button"]["text"]	
 	
-<Next_Button@Button_Template>
+<Next_Layout@Button_Layout>
 	center_x: app.three_drops.next_x
 	center_y: app.three_drops.next_y
-	text: app.td_layout["next_button"]["text"]	
+
+<Back_Button@ButtonClicks>
+	source: app.td_layout["back_button"]["background"]
+	
+<Next_Button@ButtonClicks>
+	source: app.td_layout["next_button"]["background"]
 	
 <Blank_Bottom@BoxLayout>
 	size_hint_y: None
@@ -40,43 +32,66 @@
         	source: app.td_layout["start_screen"]["background"]	
             size: self.size
             pos: self.pos
-    
-    ###Text        
+           
 	BoxLayout:
 		size: root.size
 		orientation: 'vertical'	
 		spacing: sp(app.td_layout["start_screen"]["spacing"])
-		Text:
-			valign: app.td_layout["start_screen"]["quote_valign"]
-			text: app.td_layout["start_screen"]["quote"]	
-		Text:
-			valign: app.td_layout["start_screen"]["quote_name_valign"]
+		
+		###Quote
+		NormalText:
+			size_hint: app.td_layout["start_screen"]["quote_size"]
+			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+			text: app.td_layout["start_screen"]["quote"]
+			valign: 'bottom'	
+		NormalText:
+			size_hint: app.td_layout["start_screen"]["quote_name_size"]
 			text: app.td_layout["start_screen"]["quote_name"]
-		ButtonClicks:
-			source: app.td_layout["start_screen"]["read_button"]
-			on_touch_up: 
-				button_identifier = 'but_004'
-				cond1 = self.collide_point(*args[1].pos)                
-				if cond1: self.click_up(self, button_identifier) 	
+			valign: 'top'
+			
+		###Read more button
+		BoxLayout:
+			orientation: 'vertical'
+			NormalText:
+				text: app.td_layout["start_screen"]["read_button_description"]
+			RelativeLayout:
+				ButtonClicks:
+					source: app.layout["buttons_one"]["mini_app_button"]
+					on_touch_up: 
+						button_identifier = 'but_004'
+						cond1 = self.collide_point(*args[1].pos)                
+						if cond1: self.click_up(self, button_identifier) 
+				ButtonLabel:
+					text: app.td_layout["start_screen"]["read_button_text"]
+				
+		###Bottom Filler
 		Blank_Bottom:				
 			
 	###Buttons
-	Back_Button:
-		on_touch_up: 
-			button_identifier = 'but_005'          #This function runs on touch up
-			cond1 = self.collide_point(*args[1].pos)                     #only runs if touch up is on button
-			if cond1: self.click_up(self, button_identifier)
-	Next_Button:
-		on_touch_up: 
-			button_identifier = 'but_006'
-			cond1 = self.collide_point(*args[1].pos)                
-			if cond1: self.click_up(self, button_identifier)		
+	Back_Layout:
+		Back_Button:
+			on_touch_up: 
+				button_identifier = 'but_005'          #This function runs on touch up
+				cond1 = self.collide_point(*args[1].pos)                     #only runs if touch up is on button
+				if cond1: self.click_up(self, button_identifier)
+		ButtonLabel:
+			pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+			text: app.td_layout["whole_section"]["back_text"]
+	Next_Layout:
+		Next_Button:
+			on_touch_up: 
+				button_identifier = 'but_006'
+				cond1 = self.collide_point(*args[1].pos)                
+				if cond1: self.click_up(self, button_identifier)	
+		ButtonLabel:
+			pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+			text: app.td_layout["whole_section"]["next_text"]
 
 
 			
 <Text_Box@TextInput>
 	size_hint: app.td_layout["three"]["text_box_size"]
-	border: app.td_layout["three"]["text_box_border"]
+	border: [0, 0, 0, 0]
 	background_color: app.td_layout["three"]["text_box_background"]         ####0, 0, 0, 0 makes the background transparent	
 	text: app.td_layout["three"]["cloud_text"] 	
 	
@@ -90,8 +105,7 @@
             size: self.size
             pos: self.pos	            	
 	Text_Box:
-		x: self.parent.width/2 - self.width/2
-		y: self.parent.height/2 - self.height/2 
+		pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 	
 <Cloud_Left@BoxLayout>
 	BoxLayout:	
@@ -117,30 +131,37 @@
 		size: root.size
 		orientation: 'vertical'
 		
-		###Cloud1
+		###Top Cloud
 		Cloud_Left:
 						
-		###Cloud2	
+		###Middle Cloud	
 		Cloud_Right:
 
-		###Cloud3	
+		###Bottom Cloud	
 		Cloud_Left:
 		
 		###Bottom Filler
 		Blank_Bottom:	
 		
-	
 	###Buttons
-	Back_Button:
-		on_touch_up: 
-			button_identifier = 'but_007'
-			cond1 = self.collide_point(*args[1].pos)                
-			if cond1: self.click_up(self, button_identifier)		
-	Next_Button:
-		on_touch_up: 
-			button_identifier = 'but_008'
-			cond1 = self.collide_point(*args[1].pos)                
-			if cond1: self.click_up(self, button_identifier)
+	Back_Layout:
+		Back_Button:
+			on_touch_up: 
+				button_identifier = 'but_007'
+				cond1 = self.collide_point(*args[1].pos)                
+				if cond1: self.click_up(self, button_identifier)
+		ButtonLabel:
+			pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+			text: app.td_layout["whole_section"]["back_text"]
+	Next_Layout:
+		Next_Button:
+			on_touch_up: 
+				button_identifier = 'but_008'
+				cond1 = self.collide_point(*args[1].pos)                
+				if cond1: self.click_up(self, button_identifier)
+		ButtonLabel:
+			pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+			text: app.td_layout["whole_section"]["next_text"]
 				
 	
 				
@@ -154,23 +175,34 @@
 	###Text
 	BoxLayout:
 		size: root.size	
-		orientation: 'vertical'				
-		Text:
+		orientation: 'vertical'	
+		
+		###Text			
+		NormalText:
 			text: app.td_layout["sent"]["text"]
-		Blank_Bottom:		
 			
-	###Buttons	
-	Back_Button	
-		on_touch_up: 
-			button_identifier = 'but_009'
-			cond1 = self.collide_point(*args[1].pos)                
-			if cond1: self.click_up(self, button_identifier)	
-	Next_Button:
-		text: app.td_layout["sent"]["menu_button_text"]
-		on_touch_up: 
-			button_identifier = 'but_010'
-			cond1 = self.collide_point(*args[1].pos)                
-			if cond1: self.click_up(self, button_identifier)			
+		###Bottom Filler	
+		Blank_Bottom:		
+	
+	###Buttons
+	Back_Layout:
+		Back_Button:
+			on_touch_up: 
+				button_identifier = 'but_009'
+				cond1 = self.collide_point(*args[1].pos)                
+				if cond1: self.click_up(self, button_identifier)
+		ButtonLabel:
+			pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+			text: app.td_layout["whole_section"]["back_text"]
+	Next_Layout:
+		Next_Button:
+			on_touch_up: 
+				button_identifier = 'but_010'
+				cond1 = self.collide_point(*args[1].pos)                
+				if cond1: self.click_up(self, button_identifier)
+		ButtonLabel:
+			pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+			text: app.td_layout["sent"]["menu_button_text"]					
 			
 		
 		
@@ -187,26 +219,29 @@
 		orientation: 'vertical'
 		
 		###Text
-		ScrollView:
-			BoxLayout:
+		BoxLayout:
+			orientation: 'vertical'
+			SubHeading:
 				size_hint_y: None
-				orientation: 'vertical'
-				Text:
-					size_hint_y: None
-					height: sp(app.td_layout["read_more"]["title_height"])
-					text: app.td_layout["read_more"]["title"]
-				Text:
-					text: app.td_layout["read_more"]["main_text"]	
+				height: sp(app.td_layout["read_more"]["title_height"])
+				text: app.td_layout["read_more"]["title"]
+			NormalText:
+				text: app.td_layout["read_more"]["main_text"]
+				valign: 'top'
+				
+		###Bottom Filler		
 		Blank_Bottom:
 		
-		
-	###Buttons	
-	Back_Button:
-		on_touch_up: 
-			button_identifier = 'but_011'
-			cond1 = self.collide_point(*args[1].pos)                
-			if cond1: self.click_up(self, button_identifier)							
-			
+	###Buttons
+	Back_Layout:
+		Back_Button:
+			on_touch_up: 
+				button_identifier = 'but_011'
+				cond1 = self.collide_point(*args[1].pos)                
+				if cond1: self.click_up(self, button_identifier)
+		ButtonLabel:
+			pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+			text: app.td_layout["whole_section"]["back_text"]							
 			
 										
 						

@@ -1,12 +1,16 @@
 '''
 Added
-
-To Do
 -UI layout
 -Graphics
 
+To Do
+-Touch up graphics
+-Make it so clicking mini app title takes you back to first page of mini app
+-Create transition between main menu and mini apps
+-Investigate whether this cna be achieved easily with a screen manager
+
 Future
--Make scroll widget do a for loop of adding buttons for each mini_app in the file to shorten code
+-Make sm widget do a for loop of adding buttons for each mini_app in the file to shorten code
 -folderise as a package to help organisation
 
 Widget Tree
@@ -15,7 +19,9 @@ Widget Tree
     -TitleBar
       -TitleDrop
     -Container
-      -ScrollMenu
+      -menu_sm
+          -ScreenOne
+          -ScreenTwo
       -mini_app_box
        
 '''
@@ -30,24 +36,20 @@ from kivy.uix.widget import Widget
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.dropdown import DropDown
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty, StringProperty
-from kivy.uix.scrollview import ScrollView
+from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.modules import inspector
 import json
 import Three
 import Utility
 
-app = None                       
+app = None  
 
-class ButtonClicks(Utility.ButtonClicks):
-    pass
-
-
-#Settings drop down logic
+#settings drop down logic
 class TitleDrop(DropDown):
     pass
     
     
-#This bar is always displayed providing a route to settings and the mainmenu
+#this bar is always displayed providing a route to settings and the mainmenu
 class TitleBar(Widget):
     title_drop = ObjectProperty(None)
     
@@ -56,42 +58,34 @@ class TitleBar(Widget):
     def variable_definition(self):
         self.app_title = app.layout["title_bar"]["app_title"]
         
-    #Changes the title text when a mini app is opened
+    #changes the title text when a mini app is opened
     def mini_app_title(self, title_text):
         self.app_title = title_text
     
-    #Changes title back to main title
+    #changes title back to main title
     def main_title(self):
         self.app_title = app.layout["title_bar"]["app_title"]
     
-    #Returns to home screen
+    #returns to home screen
     def home_press(self):
         container = app.main_menu.container
-        container.add_scroll_menu()
+        container.add_menu_sm()
      
-    #Opens drop down for right hand button (opposite home button)    
+    #opens drop down for right hand button (opposite home button)    
     def open_drop_down(self, main_button):
         self.title_drop = TitleDrop()
         self.title_drop.open(main_button)    
        
 
-#Contains all the miniapp buttons      
-class ScrollMenu(ScrollView):  
-    scroll_height = NumericProperty(0)
-    
-    #Calculates the height of the scroll menu portion of the main menu
-    #Will need to alter this calculation when there are lots of mini_apps buttons
-    def variable_definition(self):
-        main = app.main_menu
-        self.scroll_height = (main.height + 50)   #50 makes it bigger than the space available so its scrollable  
-    
-    #Changes the title bar text to the mini_app title
+#contains the first four miniapp buttons      
+class ButtonsOne(Screen):   
+    #changes the title bar text to the mini_app title
     def change_title(self, mini_app):
         title_text = mini_app.title
         title = app.main_menu.title_bar
         title.mini_app_title(title_text)         
     
-    #Three_Drops mini app opening functions
+    #three_Drops mini app opening functions
     def three_drops(self):
         three_drops = app.three_drops
         container = app.main_menu.container
@@ -99,50 +93,71 @@ class ScrollMenu(ScrollView):
         self.change_title(three_drops)                #passes three_drops() class reference to the title class
         three_drops.open()                              #creates the mini_app object
         container.mini_app_box = three_drops.mini_app     #takes the mini_app object variable from the mini_app
-        container.add_mini_app()                          #adds the mini_app to the container
-        
+        container.add_mini_app()                          #adds the mini_app to the container        
 
-#Any new screens are added to the container widget
+
+class MenuBackground(Screen): 
+    menu_sm = ObjectProperty(None)
+    menu_buttons = ObjectProperty(None)
+    
+    #button classes allowing access to their functions
+    #don't know how to do this directly from within screen manager
+    buttons_one = ObjectProperty(None)
+    
+    #sets up the menu screen manager
+    #when >4 mini apps can add second button screen here
+    def screen_manager(self):
+        self.buttons_one = ButtonsOne(name = 'ButtonsOne')
+        self.menu_sm = ScreenManager(transition = FadeTransition()) 
+        self.menu_sm.add_widget(self.buttons_one)
+        
+    def add_menu_buttons(self):
+        self.menu_buttons.add_widget(self.menu_sm)
+
+
+#any new screens are added to the container widget
 class Container(RelativeLayout):  
-    scroll_menu = ObjectProperty(None)
+    menu = ObjectProperty(None)
     mini_app_box = ObjectProperty(None)
     
-    scroll_displayed = BooleanProperty(False)
-    
-    #On start up adds the ScrollMenu to the container
+    menu_displayed = BooleanProperty(False)
+        
+    #on start up adds the menu_sm to the container
     def start_menu(self):
-        self.scroll_menu = ScrollMenu()
-        self.add_widget(self.scroll_menu)
+        self.menu = MenuBackground()
+        self.add_widget(self.menu)
+        self.menu.screen_manager() 
+        self.menu.add_menu_buttons()
         self.change_title()
-        self.scroll_displayed = True
+        self.menu_displayed = True
     
-    #Adds mini_app to container
+    #adds mini_app to container
     def add_mini_app(self):
-        self.remove_widget(self.scroll_menu)  
+        self.remove_widget(self.menu)  
         self.add_widget(self.mini_app_box)  
-        self.scroll_displayed = False
+        self.menu_displayed = False
     
-    #Removes the mini_app and adds the ScrollMenu to the container
-    def add_scroll_menu(self):
-        if self.scroll_displayed == False:
+    #removes the mini_app and adds the menu_sm to the container
+    def add_menu_sm(self):
+        if self.menu_displayed == False:
             self.remove_widget(self.mini_app_box)  
-            self.add_widget(self.scroll_menu) 
+            self.add_widget(self.menu)
             self.change_title()
-            self.scroll_displayed = True   
+            self.menu_displayed = True   
     
-    #Changes title text to main app title text (from mini_app title text)     
+    #changes title text to main app title text (from mini_app title text)     
     def change_title(self):
         title = app.main_menu.title_bar
         title.main_title() 
             
 
-#Main screen class contains the title bar and the container widget
+#main screen class contains the title bar and the container widget
 class MainMenu(Widget):
     container = ObjectProperty(None)
     title_bar = ObjectProperty(None)
     
 
-#Singleton main class
+#singleton main class
 class OceanDropsApp(App):
     main_menu = ObjectProperty(None)
     three_drops = ObjectProperty(None)
@@ -184,20 +199,17 @@ class OceanDropsApp(App):
         self.utility_layout = json.load(json_data)
         json_data.close()
            
-    #Runs straight after build
+    #runs straight after build
     def on_start(self):
-        container = self.main_menu.container
-        container.start_menu()     #Adds scroll menu to container on start up  
-        self.variable_definition()      
+        container = self.main_menu.container 
+        container.start_menu()     #Adds menu to container on start up  
+        self.variable_definition()     
     
-    #Defines all the start up variables that need calculated or grabbed from json    
+    #defines all the start up variables that need calculated or grabbed from json    
     def variable_definition(self):
         title = self.main_menu.title_bar
         title.variable_definition()   
-        container = self.main_menu.container 
-        scroll = container.scroll_menu
-        scroll.variable_definition()   #Changes height of scroll
-    
+            
     
 if __name__ == '__main__':
     OceanDropsApp().run()

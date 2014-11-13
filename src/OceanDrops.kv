@@ -1,13 +1,12 @@
 #kivy 1.8.0
 
 ###Templates###
-            
+<Mini_App_Description@MiniAppDescription>
+	size_hint: app.layout["mini_app_description"]["size"]
+	pos_hint: {'center_x': 0.5, 'center_y': 0.5}         
+        
             
 ###Widgets###
-<ButtonClicks>
-
-
-
 <TitleDrop>
 	Button:
         text: 'About'
@@ -31,13 +30,7 @@
 		Image:
 			size_hint_x: app.layout["title_bar"]["button_size"]	
 			source: app.layout["title_bar"]["app_icon"]
-		Label:
-			font_name: app.layout["ocean_drops"]["heading_1"]
-			font_size: sp(app.layout["title_bar"]["heading_size"])
-			color: app.layout["title_bar"]["text_color"]
-			text_size: self.size
-			halign: 'left'
-			valign: 'middle'
+		Heading:
 			text: root.app_title
 		ButtonClicks:
 			size_hint_x: app.layout["title_bar"]["button_size"]	
@@ -53,65 +46,63 @@
 				button_identifier = 'but_002'       
 				cond1 = self.collide_point(*args[1].pos)                
 				if cond1: self.click_up(self, button_identifier) 
-			
-			
-	
-<Mini_App_Layout@BoxLayout>
-	orientation: 'vertical'
-	size_hint_y: None
-	height: sp(app.layout["scroll_menu"]["button_height"]) 	
-	
-<Mini_App_Description@Label>
-			
-<ScrollMenu>
-	effect_cls: 'DampedScrollEffect'
-	
-	button_height: app.layout["scroll_menu"]["button_height"]
-	number_buttons: app.layout["scroll_menu"]["mini_apps"] + 1           ##number of apps plus footer
-	height_all_buttons: (root.button_height * root.number_buttons)       #button height times number of buttons
-	blank_height: (root.scroll_height - root.height_all_buttons)      #scroll height minus height of all buttons
-	padding_x: sp(app.layout["scroll_menu"]["padding_x"])
-	padding_y: sp(app.layout["scroll_menu"]["padding_y"])
-	
-	##Background image
-	canvas.before:
-        Rectangle:
-        	source: app.layout["scroll_menu"]["background"]
-            size: self.size
-            pos: self.pos
-	
-	BoxLayout:
-		size_hint_y: None
-		height: sp(root.scroll_height)
-		orientation: 'vertical'
-		spacing: sp(app.layout["scroll_menu"]["spacing"])
-		padding: (root.padding_x, root.padding_y)
 		
-		##Three_Drops buttons
-		Mini_App_Layout:
+				
+			
+<ButtonsOne>	
+	#Can change this to a grid layout with 4 buttons when there are enough mini apps	
+	BoxLayout:
+		orientation: 'vertical'
+		
+		##Three_Drops button
+		RelativeLayout:
 			ButtonClicks:
-				source: app.layout["scroll_menu"]["three_button"]
+				source: app.layout["buttons_one"]["mini_app_button"]
 				on_touch_up: 
 					button_identifier = 'but_003'
 					cond1 = self.collide_point(*args[1].pos)                
 					if cond1: self.click_up(self, button_identifier) 	
-			Mini_App_Description:
-				size_hint_y: app.layout["scroll_menu"]["description_height"]
-				text: 'Hello world'
-				
-		##Blank space to fill out scroll menu		
-		BoxLayout:
-			height: sp(root.blank_height)
+			ButtonLabel:
+				text: app.layout["buttons_one"]["top_left_text"]
+		Mini_App_Description:
+			text: app.layout["buttons_one"]["top_left_descrip"]	
+			
+	
+	
+<MenuBackground>
+	menu_buttons: menu_buttons_obj
+	
+	##Background image
+	canvas.before:
+        Rectangle:
+        	source: app.layout["menu_background"]["background"]
+            size: self.size
+            pos: self.pos
+    
+    ##Content        
+	BoxLayout:
+		size: root.size
+		orientation: 'vertical'
 		
-		##Footer	
-		Label:
-			font_name: app.layout["ocean_drops"]["heading_1"]
-			font_size: sp(app.layout["scroll_menu"]["footer_size"])
-			size_hint_y: None
-			height: sp(app.layout["scroll_menu"]["button_height"])
-			text: app.layout["scroll_menu"]["footer"]
-	
-	
+		#Menu buttons are added here
+		BoxLayout:
+			size_hint_y: app.layout["menu_background"]["buttons_height"]
+			AnchorLayout:
+				anchor_x: 'center'
+				anchor_y: 'center'
+				BoxLayout:
+					size_hint: app.layout["buttons_one"]["size_hinting"]
+					id: menu_buttons_obj
+						
+		#Blank height
+		BoxLayout:
+			size_hint_x: app.layout["menu_background"]["blank_height"]
+				
+		##Footer				
+		Footer:
+			text: app.layout["menu_background"]["footer"]
+			
+			
 
 <Container>
 

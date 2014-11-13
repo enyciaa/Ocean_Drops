@@ -1,33 +1,21 @@
-{	
-	"three_drops": {
-		"text_color": [1, 1, 1, 1]
+{	"whole_section": {
+	    "back_text": "Back",
+	    "next_text": "Next"
 	},
 	
-	
-	
-	
-	"text": {
-    	"halign": "center",
-    	"valign": "middle",
-    	"font_size": 15
-	},
-  
-	"button_template": {
-	    "size_x": 100,
-	    "size_y": 100,
-	    "pos_horizontal_factor": 5,
-	    "pos_vertical_factor": 10,
-	    "back_color": [0, 0, 0, 0],
-	    "valign": "middle",
-	    "halign": "center"
+	"button_layout": {
+	    "width": 100,
+	    "height": 40,
+	    "pos_horizontal_factor": 8,
+	    "pos_vertical_factor": 15
 	},
 	
 	"back_button": {
-	    "text": "Back"
+		"background": "images/back.png"
 	},
 	
 	"next_button": {
-	    "text": "Next"
+		"background": "images/next.png"
 	},
 	
 	"blank_bottom": {
@@ -36,26 +24,26 @@
 	
 	
 	
-	
 	"start_screen": {
-	    "background": "Images/Night.png",
+		"background": "Images/Night.png",
+		"spacing": 20,
+	    "quote_size": [0.8, 1],
 	    "quote": "The hard must become habit.  The habit must become easy.  The easy must become beautiful.",
+	    "quote_name_size": [1, 0.5],
 	    "quote_name": "~Doug Henning",
-	    "quote_valign": "bottom",
-	    "quote_name_valign": "top",
-	    "spacing": 20,
-	    "read_button": "Images/td_read_button.png"
+	    "read_button_description": "To read the facts behind\nthe excercies please click below",
+	    "read_button": "Images/td_read_button.png",
+	    "read_button_text": "Read\nMore"
 	},
 	
 	"three": {
-		"text_box_size": [0.8, 0.8],
-		"text_box_border": [0, 0, 0, 0],
-		"text_box_background": [0, 0, 0, 0],
-		"cloud_size": [1.3, 0.9],
-		"cloud_color": [1, 1, 1, 1],
+		"background": "Images/Horizon.png",
 		"cloud_background": "Images/Cloud.png",
 		"cloud_text": "Hello World",
-		"background": "Images/Horizon.png"
+		"text_box_size": [0.8, 0.8],
+		"text_box_background": [0, 0, 0, 0],
+		"cloud_size": [1.3, 0.9],
+		"cloud_color": [1, 1, 1, 1]
 	},
 	
 	"sent": {
