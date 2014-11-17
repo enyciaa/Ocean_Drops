@@ -49,12 +49,20 @@
 <ButtonLabel>
 	font_name: app.utility_layout["button_label"]["font"]
 	font_size: sp(app.utility_layout["button_label"]["size"])
-	color: app.utility_layout["button_label"]["color"]
+	color: app.utility_layout["button_label"]["normal_color"]
 	text_size: self.size
 	halign: 'center'
 	valign: 'middle'
 	markup: True
-
+	on_touch_down: 
+    	if self.collide_point(*args[1].pos): root.click_down(self)
+    on_touch_move: 													
+    	if self.collide_point(*args[1].pos): pass     #if touch moves off play button highlighting goes away
+    	else: root.click_moved(self)
+	on_touch_up:
+		if self.collide_point(*args[1].pos): self.click_up(self)         #only runs if touch up is on button
+		
+		
 <ButtonClicks>	
     on_touch_down: 
     	if self.collide_point(*args[1].pos): root.click_down(self)

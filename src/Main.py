@@ -2,27 +2,28 @@
 Added
 -UI layout
 -Graphics
+-Changed logic for switching to miniapps to another screen manager, aids loading time, shortens code and allows transition setting
 
 To Do
 -Touch up graphics
--Make it so clicking mini app title takes you back to first page of mini app
--Create transition between main menu and mini apps
--Investigate whether this cna be achieved easily with a screen manager
+-Make button labels highlight when buttons are clicked
 
 Future
--Make sm widget do a for loop of adding buttons for each mini_app in the file to shorten code
+-when you press app icon (top left) have a drop down list of all the other miniapps OR 
+    make it change to a back button which goes back to the main menu
+-Make ButtonSwitcher widget do a for loop of adding buttons for each mini_app in the file to shorten code
 -folderise as a package to help organisation
 
 Widget Tree
 -App
-  -MainMenu
+  -OceanDrops
     -TitleBar
       -TitleDrop
-    -Container
-      -menu_sm
-          -ScreenOne
-          -ScreenTwo
-      -mini_app_box
+    -Appswitcher
+        -MainMenu
+            -ButtonSwitcher
+                -Buttons1
+        -Also contains links to all mini app managers
        
 '''
 __version__ = "1.0.2"
@@ -33,13 +34,13 @@ kivy.require('1.8.0')
 from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.dropdown import DropDown
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty, StringProperty
-from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.modules import inspector
 import json
 import Three
+import Misc
 import Utility
 
 app = None  
@@ -54,22 +55,14 @@ class TitleBar(Widget):
     title_drop = ObjectProperty(None)
     
     app_title = StringProperty()
-    
-    def variable_definition(self):
-        self.app_title = app.layout["title_bar"]["app_title"]
-        
-    #changes the title text when a mini app is opened
-    def mini_app_title(self, title_text):
-        self.app_title = title_text
-    
+     
     #changes title back to main title
-    def main_title(self):
+    def set_main_title(self):
         self.app_title = app.layout["title_bar"]["app_title"]
-    
-    #returns to home screen
-    def home_press(self):
-        container = app.main_menu.container
-        container.add_menu_sm()
+            
+    #changes the title text when a mini app is opened
+    def mini_app_title(self, mini_title):
+        self.app_title = mini_title
      
     #opens drop down for right hand button (opposite home button)    
     def open_drop_down(self, main_button):
@@ -77,93 +70,54 @@ class TitleBar(Widget):
         self.title_drop.open(main_button)    
        
 
-#contains the first four miniapp buttons      
+#contains the first four mini app buttons      
 class ButtonsOne(Screen):   
-    #changes the title bar text to the mini_app title
-    def change_title(self, mini_app):
-        title_text = mini_app.title
-        title = app.main_menu.title_bar
-        title.mini_app_title(title_text)         
-    
-    #three_Drops mini app opening functions
-    def three_drops(self):
-        three_drops = app.three_drops
-        container = app.main_menu.container
-        
-        self.change_title(three_drops)                #passes three_drops() class reference to the title class
-        three_drops.open()                              #creates the mini_app object
-        container.mini_app_box = three_drops.mini_app     #takes the mini_app object variable from the mini_app
-        container.add_mini_app()                          #adds the mini_app to the container        
+    pass
 
 
-class MenuBackground(Screen): 
-    menu_sm = ObjectProperty(None)
-    menu_buttons = ObjectProperty(None)
-    
-    #button classes allowing access to their functions
-    #don't know how to do this directly from within screen manager
+#contains all the button grids to the mini apps
+class ButtonSwitcher(ScreenManager):
     buttons_one = ObjectProperty(None)
     
-    #sets up the menu screen manager
-    #when >4 mini apps can add second button screen here
-    def screen_manager(self):
+    #adds each button grid
+    def add_button_grids(self):
         self.buttons_one = ButtonsOne(name = 'ButtonsOne')
-        self.menu_sm = ScreenManager(transition = FadeTransition()) 
-        self.menu_sm.add_widget(self.buttons_one)
+        self.add_widget(self.buttons_one)
         
-    def add_menu_buttons(self):
-        self.menu_buttons.add_widget(self.menu_sm)
+        
+#the main menu which is the first screen seen and is linked to all the mini apps      
+class MainMenu(Screen): 
+    button_switcher = ObjectProperty(None)
 
 
-#any new screens are added to the container widget
-class Container(RelativeLayout):  
-    menu = ObjectProperty(None)
-    mini_app_box = ObjectProperty(None)
+#any new mini apps are added to the app switcher
+class AppSwitcher(ScreenManager):  
+    main_menu = ObjectProperty(None)
     
-    menu_displayed = BooleanProperty(False)
+    #adds each mini app
+    def add_mini_apps(self):
+        self.main_menu = MainMenu(name = 'MainMenu')
+        self.add_widget(self.main_menu)
         
-    #on start up adds the menu_sm to the container
-    def start_menu(self):
-        self.menu = MenuBackground()
-        self.add_widget(self.menu)
-        self.menu.screen_manager() 
-        self.menu.add_menu_buttons()
-        self.change_title()
-        self.menu_displayed = True
-    
-    #adds mini_app to container
-    def add_mini_app(self):
-        self.remove_widget(self.menu)  
-        self.add_widget(self.mini_app_box)  
-        self.menu_displayed = False
-    
-    #removes the mini_app and adds the menu_sm to the container
-    def add_menu_sm(self):
-        if self.menu_displayed == False:
-            self.remove_widget(self.mini_app_box)  
-            self.add_widget(self.menu)
-            self.change_title()
-            self.menu_displayed = True   
-    
-    #changes title text to main app title text (from mini_app title text)     
-    def change_title(self):
-        title = app.main_menu.title_bar
-        title.main_title() 
+        self.add_widget(app.misc)
+        self.add_widget(app.three_drops)     #adds mini app to screen manager 
             
-
-#main screen class contains the title bar and the container widget
-class MainMenu(Widget):
-    container = ObjectProperty(None)
+            
+#main screen class contains the title bar and the app_switcher widget
+class OceanDrops(Widget):
+    app_switcher = ObjectProperty(None)
     title_bar = ObjectProperty(None)
     
 
 #singleton main class
-class OceanDropsApp(App):
-    main_menu = ObjectProperty(None)
+class MainApp(App):
+    ocean_drops = ObjectProperty(None)
+    misc = ObjectProperty(None)
     three_drops = ObjectProperty(None)
-    
+
     #json files
     layout = ObjectProperty(None)
+    misc_layout = ObjectProperty(None)
     td_layout = ObjectProperty(None)
     utility_layout = ObjectProperty(None)
     
@@ -172,23 +126,30 @@ class OceanDropsApp(App):
         global app
         app = self
         Three.app = self
+        Misc.app = self
         Utility.app = self
         
-        #main app loading
         self.load_json()
-        self.main_menu = MainMenu()
         
+        #main app
+        self.ocean_drops = OceanDrops()
+        self.misc = Misc.MiscScreens(name = 'Misc')
+        self.misc.start()
         #mini app loading
-        self.three_drops = Three.ThreeDrops()
+        self.three_drops = Three.ThreeDrops(name = 'ThreeDrops')
         self.three_drops.start()
         
-        inspector.create_inspector(Window, self.main_menu)
+        inspector.create_inspector(Window, self.ocean_drops)
         
-        return self.main_menu
+        return self.ocean_drops
     
     def load_json(self):
-        json_data = open('OceanDrops.json')
+        json_data = open('Main.json')
         self.layout = json.load(json_data)
+        json_data.close()
+        
+        json_data = open('Misc.json')
+        self.misc_layout = json.load(json_data)
         json_data.close()
         
         json_data = open('Three.json')
@@ -201,15 +162,17 @@ class OceanDropsApp(App):
            
     #runs straight after build
     def on_start(self):
-        container = self.main_menu.container 
-        container.start_menu()     #Adds menu to container on start up  
-        self.variable_definition()     
+        self.ocean_drops.app_switcher.add_mini_apps()      #creates app switcher screen manager
+        self.ocean_drops.app_switcher.main_menu.button_switcher.add_button_grids()      #creates button switcher screen manager
+        self.ocean_drops.title_bar.set_main_title()     #sets title bar text
+        Window.bind(on_keyboard = self.android_back)    
     
-    #defines all the start up variables that need calculated or grabbed from json    
-    def variable_definition(self):
-        title = self.main_menu.title_bar
-        title.variable_definition()   
-            
-    
+    #code to run when android back button (or keyboard escape button) is pressed
+    def android_back(self, window, key, *args):
+        if key == 27:        #key 27 is the esc key or back button on android
+            self.ocean_drops.app_switcher.current = 'MainMenu'
+            return True
+        
+        
 if __name__ == '__main__':
-    OceanDropsApp().run()
+    MainApp().run()

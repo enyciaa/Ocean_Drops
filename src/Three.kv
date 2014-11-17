@@ -52,16 +52,14 @@
 		###Read more button
 		BoxLayout:
 			orientation: 'vertical'
-			NormalText:
-				text: app.td_layout["start_screen"]["read_button_description"]
 			RelativeLayout:
 				ButtonClicks:
-					source: app.layout["buttons_one"]["mini_app_button"]
 					on_touch_up: 
 						button_identifier = 'but_004'
 						cond1 = self.collide_point(*args[1].pos)                
 						if cond1: self.click_up(self, button_identifier) 
 				ButtonLabel:
+					color: [0, 0, 0, 1]
 					text: app.td_layout["start_screen"]["read_button_text"]
 				
 		###Bottom Filler
@@ -90,34 +88,9 @@
 
 			
 <Text_Box@TextInput>
-	size_hint: app.td_layout["three"]["text_box_size"]
+	size_y: sp(app.td_layout["three"]["cloud_height"])
 	border: [0, 0, 0, 0]
-	background_color: app.td_layout["three"]["text_box_background"]         ####0, 0, 0, 0 makes the background transparent	
-	text: app.td_layout["three"]["cloud_text"] 	
-	
-<Cloud@BoxLayout, RelativeLayout>
-	size_hint: app.td_layout["three"]["cloud_size"]  
-	canvas:
-		Color:
-			rgba: app.td_layout["three"]["cloud_color"]  
-    	Rectangle:
-        	source: app.td_layout["three"]["cloud_background"]  
-            size: self.size
-            pos: self.pos	            	
-	Text_Box:
-		pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-	
-<Cloud_Left@BoxLayout>
-	BoxLayout:	
-		orientation: 'horizontal'		
-		Cloud:
-		BoxLayout:	   
-    
-<Cloud_Right@BoxLayout>
-	BoxLayout:	
-		orientation: 'horizontal'		
-		BoxLayout:	
-		Cloud:	
+	background_color: app.td_layout["three"]["text_box_background"]         ####0, 0, 0, 0 makes the background transparent	 
 
 <Three>
 	canvas.before:
@@ -132,13 +105,38 @@
 		orientation: 'vertical'
 		
 		###Top Cloud
-		Cloud_Left:
+		BoxLayout:	
+			size_hint_y: None
+			height: sp(app.td_layout["three"]["cloud_height"])
+			orientation: 'horizontal'	
+			BoxLayout:	
+			Text_Box:
+				size_hint_x: None
+				width: sp(app.td_layout["three"]["cloud_width_top"])
+				text: app.td_layout["three"]["cloud_text_top"] 		 
 						
 		###Middle Cloud	
-		Cloud_Right:
-
+		BoxLayout:	
+			size_hint_y: None
+			height: sp(app.td_layout["three"]["cloud_height"])
+			orientation: 'horizontal'			
+			Text_Box:	
+				size_hint_x: None
+				width: sp(app.td_layout["three"]["cloud_width_middle"])
+				text: app.td_layout["three"]["cloud_text_middle"] 	
+			BoxLayout:
+			
 		###Bottom Cloud	
-		Cloud_Left:
+		BoxLayout:	
+			size_hint_y: None
+			height: sp(app.td_layout["three"]["cloud_height"])
+			orientation: 'horizontal'		
+			BoxLayout:	
+			Text_Box:
+				size_hint_x: None
+				width: sp(app.td_layout["three"]["cloud_width_bottom"])
+				text: app.td_layout["three"]["cloud_text_bottom"] 		
+			BoxLayout:	
 		
 		###Bottom Filler
 		Blank_Bottom:	
@@ -177,8 +175,14 @@
 		size: root.size	
 		orientation: 'vertical'	
 		
+		###Top Filler	
+		BoxLayout:	
+			size_hint_y: None
+			height: sp(app.td_layout["sent"]["top_filler_size"])
+		
 		###Text			
 		NormalText:
+			color: app.td_layout["sent"]["color"]
 			text: app.td_layout["sent"]["text"]
 			
 		###Bottom Filler	
@@ -243,5 +247,7 @@
 			pos_hint: {'center_x': 0.75, 'center_y': 0.5}
 			text: app.td_layout["whole_section"]["back_text"]							
 			
-										
+
+
+<ThreeDrops>								
 						

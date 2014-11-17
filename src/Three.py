@@ -4,25 +4,24 @@ Added
 
 To Do
 -Graphics
+-Cloud text box positioning
 
 Future
 -have quote change every day
 
 Widget Tree
 -Three_Drops
-  -mini_app
     -sm
-      -StartScreen
-      -Three
-      -Sent
-  -read_more
-    -ReadMore    
+        -StartScreen
+        -Three
+        -Sent
+        -ReadMore    
 '''
 from kivy.core.window import Window
 from kivy.app import Builder
 from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
-from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty
+from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty, StringProperty
 import Utility
 
 Builder.load_file('three.kv') 
@@ -46,12 +45,10 @@ class ReadMore(Screen):
     pass
 
 
-class ThreeDrops(Widget):
-    read_more = ObjectProperty(None)
-    mini_app = ObjectProperty(None)
-    sm = ObjectProperty(None)
+class ThreeDrops(Screen):
+    td_manager = ObjectProperty(None)
     
-    title = 'Three Good Drops'   #has to be here rather than json as title is changed before mini app object is made
+    title = StringProperty()
     
     back_x = NumericProperty(0)
     back_y = NumericProperty(0)
@@ -62,7 +59,9 @@ class ThreeDrops(Widget):
     def start(self):
         global three_drops
         three_drops = self
+        self.title = app.td_layout["whole_section"]["app_title"] 
         self.button_position()
+        self.open()
     
     def button_position(self):
         self.back_x = Window.width / app.td_layout["button_layout"]["pos_horizontal_factor"] 
@@ -76,11 +75,11 @@ class ThreeDrops(Widget):
         three = Three(name = 'Three')
         sent = Sent(name = 'Sent')   
         read_more = ReadMore(name = 'ReadMore')  
-        self.sm = ScreenManager(transition = FadeTransition()) 
-        self.sm.add_widget(start_screen)
-        self.sm.add_widget(three)
-        self.sm.add_widget(sent)
-        self.sm.add_widget(read_more)
-        self.mini_app = self.sm
+        self.td_manager = ScreenManager(transition = FadeTransition()) 
+        self.td_manager.add_widget(start_screen)
+        self.td_manager.add_widget(three)
+        self.td_manager.add_widget(sent)
+        self.td_manager.add_widget(read_more)
+        self.add_widget(self.td_manager)
         
         

@@ -2,10 +2,14 @@
 		"size": [0.95, 0.4]	
 	},
 	
+	"button_label": {
+		"size": [0.8, 0.8]
+	},
 	
 	
 	"title_drop": {
-    	"button_height": 44
+    	"button_height": 44,
+    	"button_width": 50
 	},
   
 	"title_bar": {
@@ -19,8 +23,7 @@
 	
 	"buttons_one": {
 		"mini_app_button": "Images/mini_app_button.png",
-		"size_hinting": [0.3, 0.3],
-		"top_left_text": "Three\nGood\nDrops",
+		"button_grid_size": [0.3, 0.3],
 		"top_left_descrip": "[i]Write three good\nthings each day[/i]"
 	},
 	
@@ -31,7 +34,7 @@
 	    "blank_height": 1
 	},
 	
-	"main_menu": {
-    	"container_height": 13
+	"ocean_drops": {
+    	"app_switcher_height": 13
 	}    
 }

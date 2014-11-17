@@ -1,4 +1,5 @@
 {	"whole_section": {
+		"app_title": "Three Drops",
 	    "back_text": "Back",
 	    "next_text": "Next"
 	},
@@ -6,7 +7,7 @@
 	"button_layout": {
 	    "width": 100,
 	    "height": 40,
-	    "pos_horizontal_factor": 8,
+	    "pos_horizontal_factor": 10,
 	    "pos_vertical_factor": 15
 	},
 	
@@ -19,41 +20,44 @@
 	},
 	
 	"blank_bottom": {
-	    "height": 200
+	    "height": 150
 	},
 	
 	
 	
 	"start_screen": {
-		"background": "Images/Night.png",
+		"background": "Images/start_screen_background.png",
 		"spacing": 20,
 	    "quote_size": [0.8, 1],
 	    "quote": "The hard must become habit.  The habit must become easy.  The easy must become beautiful.",
 	    "quote_name_size": [1, 0.5],
 	    "quote_name": "~Doug Henning",
-	    "read_button_description": "To read the facts behind\nthe excercies please click below",
-	    "read_button": "Images/td_read_button.png",
-	    "read_button_text": "Read\nMore"
+	    "middle_filler": [1, 2.2],
+	    "read_button_text": "Click to\nRead\nHow This Works"
 	},
 	
 	"three": {
-		"background": "Images/Horizon.png",
-		"cloud_background": "Images/Cloud.png",
-		"cloud_text": "Hello World",
-		"text_box_size": [0.8, 0.8],
+		"background": "Images/three_background.png",
 		"text_box_background": [0, 0, 0, 0],
-		"cloud_size": [1.3, 0.9],
-		"cloud_color": [1, 1, 1, 1]
+		"cloud_text_top": "Click here to type the first good thing that happened",
+		"cloud_text_middle": "Click here to type the second good thing that happened",
+		"cloud_text_bottom": "Click here to type the third good thing that happened",
+		"cloud_height": 150,
+		"cloud_width_top": 200,
+		"cloud_width_middle": 200,
+		"cloud_width_bottom": 200
 	},
 	
 	"sent": {
-		"background": "Images/Day.png",
+		"background": "Images/sent_background.png",
 		"text": "Sleep Well",
+		"top_filler_size": 300,
+		"color": [0, 0, 0, 1],
 		"menu_button_text": "Main Menu"
 	},
 	
 	"read_more": {
-		"background": "Images/Horizon.png",
+		"background": "Images/read_background.png",
 		"title_height": 50,
 		"title": "Why This Works",
 		"main_text": "blablabla"

@@ -1,17 +1,29 @@
 #kivy 1.8.0
+#import to allow transitions for screenmanager to be set in kv file
+#:import sm kivy.uix.screenmanager
 
 ###Templates###
 <Mini_App_Description@MiniAppDescription>
 	size_hint: app.layout["mini_app_description"]["size"]
 	pos_hint: {'center_x': 0.5, 'center_y': 0.5}         
-        
+
+<Button_Label@ButtonLabel>   
+	size_hint: app.layout["button_label"]["size"]
+	pos_hint: {'center_x': 0.5, 'center_y': 0.5}          
+            
+            
             
 ###Widgets###
 <TitleDrop>
-	Button:
+	ButtonClicks:
         text: 'About'
-        size_hint_y: None
+        size_hint: None, None
         height: sp(app.layout["title_drop"]["button_height"])
+        width: sp(app.layout["title_drop"]["button_height"])
+        on_touch_up: 
+			button_identifier = 'but_012'       
+			cond1 = self.collide_point(*args[1].pos)                
+			if cond1: self.click_up(self, button_identifier) 
         
                    
 
@@ -62,16 +74,21 @@
 					button_identifier = 'but_003'
 					cond1 = self.collide_point(*args[1].pos)                
 					if cond1: self.click_up(self, button_identifier) 	
-			ButtonLabel:
-				text: app.layout["buttons_one"]["top_left_text"]
+			Button_Label:
+				text: app.td_layout["whole_section"]["app_title"] 
 		Mini_App_Description:
 			text: app.layout["buttons_one"]["top_left_descrip"]	
+
+
+
+<ButtonSwitcher>
+	transition: sm.SlideTransition()
 			
 	
 	
-<MenuBackground>
-	menu_buttons: menu_buttons_obj
-	
+<MainMenu>
+	button_switcher: button_switcher_obj
+		
 	##Background image
 	canvas.before:
         Rectangle:
@@ -91,8 +108,9 @@
 				anchor_x: 'center'
 				anchor_y: 'center'
 				BoxLayout:
-					size_hint: app.layout["buttons_one"]["size_hinting"]
-					id: menu_buttons_obj
+					size_hint: app.layout["buttons_one"]["button_grid_size"]
+					ButtonSwitcher:
+						id: button_switcher_obj
 						
 		#Blank height
 		BoxLayout:
@@ -104,22 +122,22 @@
 			
 			
 
-<Container>
-
+<AppSwitcher>
+	transition: sm.FadeTransition()
 			
 			
-<MainMenu>
+<OceanDrops>
 	title_bar: title_obj
-	container: container_obj
+	app_switcher: app_switcher_obj
             
 	BoxLayout:
 		size: root.size
 		orientation: 'vertical'
 		RelativeLayout:        
 			TitleBar:
-				id: title_obj
-		Container:	
-			id: container_obj
-			size_hint_y: app.layout["main_menu"]["container_height"]		
+				id: title_obj 		
+		AppSwitcher:
+			id: app_switcher_obj
+			size_hint_y: app.layout["ocean_drops"]["app_switcher_height"]	
 			
 								
