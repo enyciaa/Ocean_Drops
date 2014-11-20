@@ -1,18 +1,26 @@
 '''
+Main entry point for app
+Contains the main screen manager and main menu
+-Note for smoke effect, roughen edges twice, do pixel smear distort and then noisy blur
+
 Added
--UI layout
--Graphics
--Changed logic for switching to miniapps to another screen manager, aids loading time, shortens code and allows transition setting
+-Created folder structure
+-Fixed Misc drop down, Finally!
+-checked code
+-made app stay active if phone sleeps
+
 
 To Do
--Touch up graphics
--Make button labels highlight when buttons are clicked
+
 
 Future
+-text may struggle on small screens.  Maybe a function to check for certain screen size and make all text smaller if so?
 -when you press app icon (top left) have a drop down list of all the other miniapps OR 
     make it change to a back button which goes back to the main menu
 -Make ButtonSwitcher widget do a for loop of adding buttons for each mini_app in the file to shorten code
--folderise as a package to help organisation
+-Some kind of progress bar, that makes it so the more you invest (repeat exercises) the more you gain (unlock more exercises?)
+-Set notifications that the user can modify
+-Could make the json function better, tried using arrays and for loops, but ran into trouble with using object strings
 
 Widget Tree
 -App
@@ -35,21 +43,28 @@ from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.dropdown import DropDown
-from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty, StringProperty
+from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
+    BooleanProperty, ReferenceListProperty, StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.modules import inspector
 import json
-import Three
-import Misc
-import Utility
+from Misc import Misc
+from Three_Drops import Three
+from Library import lib_Button
+from Library import lib_Text
 
 app = None  
 
 #settings drop down logic
 class TitleDrop(DropDown):
-    pass
+    button_height = NumericProperty(0)
+    button_width = NumericProperty(0)
     
-    
+    #sizes the drop down buttons
+    def button_size(self):
+        self.button_height = app.ocean_drops.title_bar.height * app.layout["title_drop"]["button_height_factor"]
+        self.button_width = self.button_height * app.layout["title_drop"]["button_size_ratio"]  #ensures the ratio always matches the image ratio for the button background
+        
 #this bar is always displayed providing a route to settings and the mainmenu
 class TitleBar(Widget):
     title_drop = ObjectProperty(None)
@@ -64,10 +79,11 @@ class TitleBar(Widget):
     def mini_app_title(self, mini_title):
         self.app_title = mini_title
      
-    #opens drop down for right hand button (opposite home button)    
-    def open_drop_down(self, main_button):
+    #opens drop down for three dots button    
+    def open_drop_down(self, parent_button):
         self.title_drop = TitleDrop()
-        self.title_drop.open(main_button)    
+        self.title_drop.button_size()
+        self.title_drop.open(parent_button)   
        
 
 #contains the first four mini app buttons      
@@ -76,6 +92,7 @@ class ButtonsOne(Screen):
 
 
 #contains all the button grids to the mini apps
+#when there are more button grids try to make screen change happen on swipes
 class ButtonSwitcher(ScreenManager):
     buttons_one = ObjectProperty(None)
     
@@ -99,7 +116,7 @@ class AppSwitcher(ScreenManager):
         self.main_menu = MainMenu(name = 'MainMenu')
         self.add_widget(self.main_menu)
         
-        self.add_widget(app.misc)
+        self.add_widget(app.misc)           #adds three dots menu to screen manager
         self.add_widget(app.three_drops)     #adds mini app to screen manager 
             
             
@@ -119,23 +136,26 @@ class MainApp(App):
     layout = ObjectProperty(None)
     misc_layout = ObjectProperty(None)
     td_layout = ObjectProperty(None)
-    utility_layout = ObjectProperty(None)
+    lib_text_layout = ObjectProperty(None)
+    lib_button_layout = ObjectProperty(None)
     
     def build(self): 
         ##definitions
-        global app
-        app = self
-        Three.app = self
-        Misc.app = self
-        Utility.app = self
+        lib_Button.app = self
+        lib_Text.app = self
         
-        self.load_json()
+        self.load_json_files()
         
         #main app
+        global app
+        app = self
         self.ocean_drops = OceanDrops()
+        #three dots extras loading
+        Misc.app = self
         self.misc = Misc.MiscScreens(name = 'Misc')
         self.misc.start()
         #mini app loading
+        Three.app = self
         self.three_drops = Three.ThreeDrops(name = 'ThreeDrops')
         self.three_drops.start()
         
@@ -143,29 +163,44 @@ class MainApp(App):
         
         return self.ocean_drops
     
-    def load_json(self):
+    #loads json files
+    #can make this more sexy somehow
+    def load_json_files(self):
         json_data = open('Main.json')
         self.layout = json.load(json_data)
         json_data.close()
         
-        json_data = open('Misc.json')
+        json_data = open('Misc/Misc.json')
         self.misc_layout = json.load(json_data)
         json_data.close()
         
-        json_data = open('Three.json')
+        json_data = open('Three_Drops/Three.json')
         self.td_layout = json.load(json_data)
         json_data.close()
         
-        json_data = open('Utility.json')
-        self.utility_layout = json.load(json_data)
+        json_data = open('Library/lib_button.json')
+        self.lib_button_layout = json.load(json_data)
+        json_data.close()
+        
+        json_data = open('Library/lib_Text.json')
+        self.lib_text_layout = json.load(json_data)
         json_data.close()
            
     #runs straight after build
     def on_start(self):
         self.ocean_drops.app_switcher.add_mini_apps()      #creates app switcher screen manager
-        self.ocean_drops.app_switcher.main_menu.button_switcher.add_button_grids()      #creates button switcher screen manager
+        self.ocean_drops.app_switcher.main_menu.button_switcher.add_button_grids()  #creates button switcher screen manager
         self.ocean_drops.title_bar.set_main_title()     #sets title bar text
         Window.bind(on_keyboard = self.android_back)    
+    
+    #keeps the app open if the phone sleeps or switches app
+    def on_pause(self):
+        #return True     #disable when testing on kivy launcher or airdroid screws up
+        pass
+        
+    #when app resumes put any data that needs reloaded here (if any)
+    def on_resume(self):
+        pass
     
     #code to run when android back button (or keyboard escape button) is pressed
     def android_back(self, window, key, *args):

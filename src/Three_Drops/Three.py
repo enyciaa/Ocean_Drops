@@ -1,13 +1,21 @@
 '''
+Three good thoughts a day mini excercises
+
 Added
--UI Layout
+-read more content
+-positioning of elements to match background
+-fixed layout
+-checked code
 
 To Do
--Graphics
--Cloud text box positioning
+-unsure whether text box will work with swiftkey.  says issue is fixed on python for android so may need built to test
+
 
 Future
--have quote change every day
+-on selection of text box highlight all current text (currenlty selct_all selects text in all textboxes
+-Store past days comments?
+-Split read more into seperate screens adding some comments on researched performed
+-have quote change every day?
 
 Widget Tree
 -Three_Drops
@@ -21,10 +29,12 @@ from kivy.core.window import Window
 from kivy.app import Builder
 from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
-from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty, StringProperty
-import Utility
+from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
+    BooleanProperty, ReferenceListProperty, StringProperty
+from Library import lib_Button
+from Library import lib_Text
 
-Builder.load_file('three.kv') 
+Builder.load_file('Three_Drops/Three.kv') 
 
 app = None
 three_drops = None  
@@ -50,6 +60,8 @@ class ThreeDrops(Screen):
     
     title = StringProperty()
     
+    button_width = NumericProperty(0)
+    button_height = NumericProperty(0)
     back_x = NumericProperty(0)
     back_y = NumericProperty(0)
     next_x = NumericProperty(0)
@@ -60,9 +72,14 @@ class ThreeDrops(Screen):
         global three_drops
         three_drops = self
         self.title = app.td_layout["whole_section"]["app_title"] 
+        self.button_sizing()
         self.button_position()
         self.open()
     
+    def button_sizing(self):
+        self.button_width = Window.width / app.td_layout["button_layout"]["width_factor"] 
+        self.button_height = app.ocean_drops.title_bar.height * app.td_layout["button_layout"]["height_factor"] 
+        
     def button_position(self):
         self.back_x = Window.width / app.td_layout["button_layout"]["pos_horizontal_factor"] 
         self.back_y = Window.height / app.td_layout["button_layout"]["pos_vertical_factor"] 

@@ -1,63 +1,86 @@
 '''
 Utility file with chunks of code used in whole package
-Contains all the text templates
+Contains all the button templates
+
+Added
+-seperated text and button templates
+-Made button labels highlight when buttons are clicked
+-Checked code
+
+To Do
+
+
+Future
+-Having seperate button label and image seems complicated
+    -See if this can be set in one widget
+    
 '''
 
 from kivy.app import Builder
 from kivy.uix.image import Image
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.label import Label
-from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty, StringProperty
+from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
+    BooleanProperty, ReferenceListProperty, StringProperty
 
-Builder.load_file('Utility.kv') 
+Builder.load_file('Library/lib_Button.kv') 
 
 app = None
-
-class Heading(Label):
-    pass
-
-class SubHeading(Label):
-    pass
-
-class MiniAppDescription(Label):
-    pass
-
-class Footer(Label):
-    pass
-
-class NormalText(Label):
-    pass
 
 #Template class for all button labels
 class ButtonLabel(Label, ButtonBehavior):
     pressed_label = ObjectProperty(None, allownone = True)
     pressed_down = BooleanProperty(False)
+    label_color = ListProperty([])
     
-    #when button is clicked text becomes translucent        
+    #when label is clicked text becomes translucent        
     def click_down(self, label):
         self.pressed_down = True
         self.pressed_label = label
-        label.color = app.utility_layout["button_label"]["pressed_color"]
-    
+        self.label_color = label.color
+        label.color = app.lib_button_layout["button_label"]["pressed_color"]
+
     #when touch moves off text, text returns to normal color    
     def click_moved(self, label):
         if self.pressed_down:
             self.pressed_label = None
             self.pressed_down = False
-            label.color = app.utility_layout["button_label"]["normal_color"]
+            label.color = self.label_color
             
-    #on button click start the game           
+    #on label click change label color back to original         
     def click_up(self, label):
         self.pressed_down = False
         if label == self.pressed_label:
             self.pressed_label = None
-            label.color = app.utility_layout["button_label"]["normal_color"]
-
+            label.color = self.label_color
+            
 
 #Template class for all buttons to give them desired clicking behaviour
 class ButtonClicks(Image, ButtonBehavior):  
     pressed_button = ObjectProperty(None, allownone = True)
     pressed_down = BooleanProperty(False)
+    
+    #when button is clicked text becomes translucent        
+    def click_down(self, button):
+        self.pressed_down = True
+        self.pressed_button = button
+        button.color = app.lib_button_layout["button_clicks"]["pressed_color"]
+    
+    #when touch moves off text, text returns to normal color    
+    def click_moved(self, button):
+        if self.pressed_down:
+            self.pressed_button = None
+            self.pressed_down = False
+            button.color = app.lib_button_layout["button_clicks"]["normal_color"]
+            
+    #on button click start the game           
+    def click_up(self, button, button_identifier):
+        self.pressed_down = False
+        if button == self.pressed_button:
+            self.pressed_button = None
+            button.color = app.lib_button_layout["button_clicks"]["normal_color"]
+            run_function = self.button_functions[button_identifier]
+            exec run_function
     
     button_functions = {
             "but_001": "self.but_001()",
@@ -71,7 +94,7 @@ class ButtonClicks(Image, ButtonBehavior):
             "but_009": "app.three_drops.td_manager.current = 'Three'",
             "but_010": "self.but_010()",
             "but_011": "app.three_drops.td_manager.current = 'StartScreen'",
-            "but_012": "app.misc.misc_manager.current = 'About'"
+            "but_012": "self.but_012()"
         }
     
     #if multiple functions are run
@@ -98,25 +121,8 @@ class ButtonClicks(Image, ButtonBehavior):
         app.ocean_drops.app_switcher.current = 'MainMenu'
         app.three_drops.td_manager.current = 'StartScreen'
         app.ocean_drops.title_bar.set_main_title()
-    
-    #when button is clicked text becomes translucent        
-    def click_down(self, button):
-        self.pressed_down = True
-        self.pressed_button = button
-        button.color = app.utility_layout["button_clicks"]["pressed_color"]
-    
-    #when touch moves off text, text returns to normal color    
-    def click_moved(self, button):
-        if self.pressed_down:
-            self.pressed_button = None
-            self.pressed_down = False
-            button.color = app.utility_layout["button_clicks"]["normal_color"]
-            
-    #on button click start the game           
-    def click_up(self, button, button_identifier):
-        self.pressed_down = False
-        if button == self.pressed_button:
-            self.pressed_button = None
-            button.color = app.utility_layout["button_clicks"]["normal_color"]
-            run_function = self.button_functions[button_identifier]
-            exec run_function
+        
+    #about button in title drop down
+    def but_012(self):
+        app.ocean_drops.app_switcher.current = 'Misc'
+        app.ocean_drops.title_bar.title_drop.dismiss()  

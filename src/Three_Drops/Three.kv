@@ -3,8 +3,8 @@
 ###Templates###
 <Button_Layout@RelativeLayout>
 	size_hint: None, None
-	width: sp(app.td_layout["button_layout"]["width"])
-	height: sp(app.td_layout["button_layout"]["height"])
+	width: app.three_drops.button_width
+	height: app.three_drops.button_height
 	
 <Back_Layout@Button_Layout>
 	center_x: app.three_drops.back_x     #Goes back to main app and then to three drops
@@ -20,9 +20,15 @@
 <Next_Button@ButtonClicks>
 	source: app.td_layout["next_button"]["background"]
 	
-<Blank_Bottom@BoxLayout>
-	size_hint_y: None
-	height: sp(app.td_layout["blank_bottom"]["height"])	
+<Text_Box@TextInput>
+	border: [0, 0, 0, 0]
+	background_color: app.td_layout["text_box"]["text_box_background"]         ####0, 0, 0, 0 makes the background transparent	 
+	font_name: app.td_layout["text_box"]["font"]
+	font_size: sp(app.td_layout["text_box"]["size"])
+	line_spacing: app.td_layout["text_box"]["line_spacing"]
+	hint_text_color: app.td_layout["text_box"]["text_color"]
+	foreground_color: app.td_layout["text_box"]["text_color"]
+
 
 
 ###Widgets###		
@@ -40,8 +46,9 @@
 		
 		###Quote
 		NormalText:
-			size_hint: app.td_layout["start_screen"]["quote_size"]
+			size_hint_x: app.td_layout["start_screen"]["quote_size"]
 			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+			font_size: sp(app.td_layout["start_screen"]["quote_font_size"])
 			text: app.td_layout["start_screen"]["quote"]
 			valign: 'bottom'	
 		NormalText:
@@ -59,11 +66,12 @@
 						cond1 = self.collide_point(*args[1].pos)                
 						if cond1: self.click_up(self, button_identifier) 
 				ButtonLabel:
-					color: [0, 0, 0, 1]
+					color: app.td_layout["start_screen"]["read_button_color"]
 					text: app.td_layout["start_screen"]["read_button_text"]
 				
 		###Bottom Filler
-		Blank_Bottom:				
+		BoxLayout:	
+			size_hint_y: app.td_layout["start_screen"]["blank_height"]			
 			
 	###Buttons
 	Back_Layout:
@@ -84,13 +92,8 @@
 		ButtonLabel:
 			pos_hint: {'center_x': 0.25, 'center_y': 0.5}
 			text: app.td_layout["whole_section"]["next_text"]
-
-
 			
-<Text_Box@TextInput>
-	size_y: sp(app.td_layout["three"]["cloud_height"])
-	border: [0, 0, 0, 0]
-	background_color: app.td_layout["three"]["text_box_background"]         ####0, 0, 0, 0 makes the background transparent	 
+		
 
 <Three>
 	canvas.before:
@@ -104,42 +107,54 @@
 		size: root.size
 		orientation: 'vertical'
 		
+		###Top Filler
+		BoxLayout:	
+			size_hint_y: app.td_layout["three"]["top_filler"]	
+		
 		###Top Cloud
 		BoxLayout:	
-			size_hint_y: None
-			height: sp(app.td_layout["three"]["cloud_height"])
+			size_hint_y: app.td_layout["three"]["cloud_height"]
 			orientation: 'horizontal'	
 			BoxLayout:	
 			Text_Box:
-				size_hint_x: None
-				width: sp(app.td_layout["three"]["cloud_width_top"])
-				text: app.td_layout["three"]["cloud_text_top"] 		 
-						
+				size_hint_x: app.td_layout["three"]["cloud_width_top"]
+				hint_text: app.td_layout["three"]["cloud_text_top"] 	
+			BoxLayout:	 
+				size_hint_x: app.td_layout["three"]["cloud_blank_top"]
+		
+		###Middle 1 Filler
+		BoxLayout:	
+			size_hint_y: app.td_layout["three"]["middle_1_filler"]	
+							
 		###Middle Cloud	
 		BoxLayout:	
-			size_hint_y: None
-			height: sp(app.td_layout["three"]["cloud_height"])
-			orientation: 'horizontal'			
+			size_hint_y: app.td_layout["three"]["cloud_middle_height"]
+			orientation: 'horizontal'	
+			BoxLayout:	 
+				size_hint_x: app.td_layout["three"]["cloud_blank_middle"]		
 			Text_Box:	
-				size_hint_x: None
-				width: sp(app.td_layout["three"]["cloud_width_middle"])
-				text: app.td_layout["three"]["cloud_text_middle"] 	
+				size_hint_x: app.td_layout["three"]["cloud_width_middle"]
+				hint_text: app.td_layout["three"]["cloud_text_middle"] 	
 			BoxLayout:
-			
+		
+		###Middle 2 Filler
+		BoxLayout:	
+			size_hint_y: app.td_layout["three"]["middle_2_filler"]	
+				
 		###Bottom Cloud	
 		BoxLayout:	
-			size_hint_y: None
-			height: sp(app.td_layout["three"]["cloud_height"])
+			size_hint_y: app.td_layout["three"]["cloud_height"]
 			orientation: 'horizontal'		
-			BoxLayout:	
+			BoxLayout:
+				size_hint_x: app.td_layout["three"]["cloud_blank_bottom"]	
 			Text_Box:
-				size_hint_x: None
-				width: sp(app.td_layout["three"]["cloud_width_bottom"])
-				text: app.td_layout["three"]["cloud_text_bottom"] 		
+				size_hint_x: app.td_layout["three"]["cloud_width_bottom"]
+				hint_text: app.td_layout["three"]["cloud_text_bottom"] 		
 			BoxLayout:	
 		
 		###Bottom Filler
-		Blank_Bottom:	
+		BoxLayout:	
+			size_hint_y: app.td_layout["three"]["bottom_filler"]		
 		
 	###Buttons
 	Back_Layout:
@@ -177,8 +192,7 @@
 		
 		###Top Filler	
 		BoxLayout:	
-			size_hint_y: None
-			height: sp(app.td_layout["sent"]["top_filler_size"])
+			size_hint_y: app.td_layout["sent"]["top_filler_size"]
 		
 		###Text			
 		NormalText:
@@ -186,7 +200,8 @@
 			text: app.td_layout["sent"]["text"]
 			
 		###Bottom Filler	
-		Blank_Bottom:		
+		BoxLayout:	
+			size_hint_y: app.td_layout["sent"]["blank_height"]			
 	
 	###Buttons
 	Back_Layout:
@@ -224,17 +239,26 @@
 		
 		###Text
 		BoxLayout:
+			size_hint_x: app.td_layout["read_more"]["text_width"]
+			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 			orientation: 'vertical'
 			SubHeading:
-				size_hint_y: None
-				height: sp(app.td_layout["read_more"]["title_height"])
+				size_hint_y: app.td_layout["read_more"]["title_height"]
 				text: app.td_layout["read_more"]["title"]
 			NormalText:
-				text: app.td_layout["read_more"]["main_text"]
+				size_hint_y: app.td_layout["read_more"]["what_text_height"]
+				text: app.td_layout["read_more"]["what_text"]
 				valign: 'top'
+			SubHeading:
+				size_hint_y: app.td_layout["read_more"]["title_height"]
+				text: app.td_layout["read_more"]["sub_heading"]
+			NormalText:
+				text: app.td_layout["read_more"]["why_text"]
+				valign: 'top'	
 				
 		###Bottom Filler		
-		Blank_Bottom:
+		BoxLayout:	
+			size_hint_y: app.td_layout["read_more"]["blank_height"]	
 		
 	###Buttons
 	Back_Layout:

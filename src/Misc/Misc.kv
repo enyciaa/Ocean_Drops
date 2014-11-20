@@ -1,0 +1,46 @@
+#kivy 1.8.0
+
+<About>
+	###Background image
+	canvas.before:
+        Rectangle:
+        	source: app.layout["menu_background"]["background"]
+            size: self.size
+            pos: self.pos
+            
+    ###Content        
+	BoxLayout:
+		size: root.size
+		orientation: 'vertical'
+		
+		###Content
+		BoxLayout:
+			size_hint_x: app.misc_layout["about"]["text_width"]
+			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+			orientation: 'vertical'
+			
+			##App Goal
+			SubHeading:
+				size_hint_y: app.misc_layout["about"]["heading_height"]
+				text: app.misc_layout["about"]["title"]
+			NormalText:
+				size_hint_y: app.misc_layout["about"]["goal_text_height"]
+				text: app.misc_layout["about"]["goal_text"]
+				valign: 'top'
+			
+			##Contact
+			SubHeading:
+				size_hint_y: app.misc_layout["about"]["heading_height"]
+				text: app.misc_layout["about"]["sub_heading"]	
+			NormalText:
+				text: app.misc_layout["about"]["contact_text"]
+				valign: 'top'
+						
+		###Blank height
+		BoxLayout:
+			size_hint_y: app.layout["menu_background"]["blank_height"]
+				
+		###Footer				
+		Footer:
+			size_hint_y: app.layout["menu_background"]["footer_height"]
+			text: app.layout["menu_background"]["footer"]

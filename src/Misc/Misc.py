@@ -1,6 +1,10 @@
 '''
-Added
+Extra pages that are reached via the top right three dots
 
+Added
+-Design and content
+-touched up layout
+-checked code
 
 To Do
 
@@ -13,12 +17,11 @@ Widget Tree
  
 '''
 from kivy.app import Builder
-from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
-from kivy.properties import ListProperty, NumericProperty, ObjectProperty, BooleanProperty, ReferenceListProperty, StringProperty
-import Utility
+from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
+    BooleanProperty, ReferenceListProperty, StringProperty
 
-Builder.load_file('misc.kv') 
+Builder.load_file('Misc/Misc.kv') 
 
 app = None
 misc = None  
@@ -33,8 +36,7 @@ class MiscScreens(Screen):
     #defines variables and does initial build for mini app
     def start(self):
         global misc
-        misc = self
-        self.title = app.misc_layout["whole_section"]["app_title"] 
+        misc = self 
         self.open()
     
     #opens three drops miniapp
