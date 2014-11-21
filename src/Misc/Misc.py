@@ -2,9 +2,7 @@
 Extra pages that are reached via the top right three dots
 
 Added
--Design and content
--touched up layout
--checked code
+
 
 To Do
 
@@ -21,7 +19,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
     BooleanProperty, ReferenceListProperty, StringProperty
 
-Builder.load_file('Misc/Misc.kv') 
+Builder.load_file('misc/misc.kv') 
 
 app = None
 misc = None  

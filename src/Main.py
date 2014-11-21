@@ -4,10 +4,6 @@ Contains the main screen manager and main menu
 -Note for smoke effect, roughen edges twice, do pixel smear distort and then noisy blur
 
 Added
--Created folder structure
--Fixed Misc drop down, Finally!
--checked code
--made app stay active if phone sleeps
 
 
 To Do
@@ -34,7 +30,8 @@ Widget Tree
         -Also contains links to all mini app managers
        
 '''
-__version__ = "1.0.2"
+
+__version__ = '1.0.3'
 
 import kivy
 kivy.require('1.8.0')
@@ -48,10 +45,10 @@ from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.modules import inspector
 import json
-from Misc import Misc
-from Three_Drops import Three
-from Library import lib_Button
-from Library import lib_Text
+from misc import misc
+from three_drops import three
+from library import lib_button
+from library import lib_text
 
 app = None  
 
@@ -141,8 +138,8 @@ class MainApp(App):
     
     def build(self): 
         ##definitions
-        lib_Button.app = self
-        lib_Text.app = self
+        lib_button.app = self
+        lib_text.app = self
         
         self.load_json_files()
         
@@ -151,12 +148,12 @@ class MainApp(App):
         app = self
         self.ocean_drops = OceanDrops()
         #three dots extras loading
-        Misc.app = self
-        self.misc = Misc.MiscScreens(name = 'Misc')
+        misc.app = self
+        self.misc = misc.MiscScreens(name = 'Misc')
         self.misc.start()
         #mini app loading
-        Three.app = self
-        self.three_drops = Three.ThreeDrops(name = 'ThreeDrops')
+        three.app = self
+        self.three_drops = three.ThreeDrops(name = 'ThreeDrops')
         self.three_drops.start()
         
         inspector.create_inspector(Window, self.ocean_drops)
@@ -166,23 +163,23 @@ class MainApp(App):
     #loads json files
     #can make this more sexy somehow
     def load_json_files(self):
-        json_data = open('Main.json')
+        json_data = open('main.json')
         self.layout = json.load(json_data)
         json_data.close()
         
-        json_data = open('Misc/Misc.json')
+        json_data = open('misc/misc.json')
         self.misc_layout = json.load(json_data)
         json_data.close()
         
-        json_data = open('Three_Drops/Three.json')
+        json_data = open('three_drops/three.json')
         self.td_layout = json.load(json_data)
         json_data.close()
         
-        json_data = open('Library/lib_button.json')
+        json_data = open('library/lib_button.json')
         self.lib_button_layout = json.load(json_data)
         json_data.close()
         
-        json_data = open('Library/lib_Text.json')
+        json_data = open('library/lib_text.json')
         self.lib_text_layout = json.load(json_data)
         json_data.close()
            
@@ -195,8 +192,8 @@ class MainApp(App):
     
     #keeps the app open if the phone sleeps or switches app
     def on_pause(self):
-        #return True     #disable when testing on kivy launcher or airdroid screws up
-        pass
+        return True     #disable when testing on kivy launcher or airdroid screws up
+        #pass
         
     #when app resumes put any data that needs reloaded here (if any)
     def on_resume(self):

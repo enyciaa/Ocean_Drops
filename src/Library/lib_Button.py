@@ -3,9 +3,7 @@ Utility file with chunks of code used in whole package
 Contains all the button templates
 
 Added
--seperated text and button templates
--Made button labels highlight when buttons are clicked
--Checked code
+
 
 To Do
 
@@ -23,7 +21,7 @@ from kivy.uix.label import Label
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
     BooleanProperty, ReferenceListProperty, StringProperty
 
-Builder.load_file('Library/lib_Button.kv') 
+Builder.load_file('library/lib_button.kv') 
 
 app = None
 

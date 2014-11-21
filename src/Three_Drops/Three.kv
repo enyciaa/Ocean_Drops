@@ -26,7 +26,7 @@
 	font_name: app.td_layout["text_box"]["font"]
 	font_size: sp(app.td_layout["text_box"]["size"])
 	line_spacing: app.td_layout["text_box"]["line_spacing"]
-	hint_text_color: app.td_layout["text_box"]["text_color"]
+	hint_text_color: app.td_layout["text_box"]["hint_text_color"]
 	foreground_color: app.td_layout["text_box"]["text_color"]
 
 
@@ -196,7 +196,8 @@
 		
 		###Text			
 		NormalText:
-			color: app.td_layout["sent"]["color"]
+			font_size: app.td_layout["sent"]["text_size"]
+			color: app.td_layout["sent"]["text_color"]
 			text: app.td_layout["sent"]["text"]
 			
 		###Bottom Filler	

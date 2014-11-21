@@ -3,10 +3,10 @@ Utility file with chunks of code used in whole package
 Contains all the text templates
 
 Added
--checked code
--finished typography
+
 
 To Do
+
 
 '''
 
@@ -15,7 +15,7 @@ from kivy.uix.label import Label
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
     BooleanProperty, ReferenceListProperty, StringProperty
 
-Builder.load_file('Library/lib_Text.kv') 
+Builder.load_file('library/lib_text.kv') 
 
 app = None
 

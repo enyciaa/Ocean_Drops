@@ -12,38 +12,39 @@
 	},
 	
 	"back_button": {
-		"background": "Three_drops/assets_td/images/back.png"
+		"background": "three_drops/assets_td/images/back.png"
 	},
 	
 	"next_button": {
-		"background": "Three_drops/assets_td/images/next.png"
+		"background": "three_drops/assets_td/images/next.png"
 	},
 	
 	"text_box": {
 		"text_box_background": [0, 0, 0, 0],
-		"font": "Library/assets_lib/fonts/Comfortaa-Regular.ttf",
+		"font": "library/assets_lib/fonts/Comfortaa-Regular.ttf",
+		"text_color": [0.2, 0.2, 0.2, 1],
 		"size": 15,
 		"line_spacing": 1.3,
-		"text_color": [0.2, 0.2, 0.2, 2]
+		"hint_text_color": [0.2, 0.2, 0.2, 1]
 		},
 	
 	
 	
 	"start_screen": {
-		"background": "Three_drops/assets_td/images/start_screen_background.png",
+		"background": "three_drops/assets_td/images/start_screen_background.png",
 		"spacing": 20,
 	    "quote_size": 0.8,
 	    "quote_font_size": 15,
 	    "quote": "The hard must become habit.\nThe habit must become easy.\nThe easy must become beautiful.",
 	    "quote_name_size": [1, 0.5],
 	    "quote_name": "~Doug Henning",
-	    "read_button_color": [0.1, 0.1, 0.1, 1],
+	    "read_button_color": [0.2, 0.2, 0.2, 1],
 	    "read_button_text": "Touch to\nRead\nHow This Works",
 	    "blank_height": 0.84
 	},
 	
 	"three": {
-		"background": "Three_drops/assets_td/images/three_background.png",
+		"background": "three_drops/assets_td/images/three_background.png",
 		"cloud_text_top": "1st good thing",
 		"cloud_text_middle": "2nd good thing",
 		"cloud_text_bottom": "3rd good thing",
@@ -62,23 +63,24 @@
 	},
 	
 	"sent": {
-		"background": "Three_drops/assets_td/images/sent_background.png",
+		"background": "three_drops/assets_td/images/sent_background.png",
 		"text": "Sleep Well",
 		"top_filler_size": 1.9,
+		"text_size": 15,
+		"text_color": [0.2, 0.2, 0.2, 1],
 		"menu_button_text": "Menu",
-		"color": [0.1, 0.1, 0.1, 1],
 		"blank_height": 1
 	},
 	
 	"read_more": {
-		"background": "Three_drops/assets_td/images/read_background.png",
+		"background": "three_drops/assets_td/images/read_background.png",
 		"text_width": 0.8,
 		"title_height": 0.2,
 		"title": "How",
 		"what_text_height": 0.7,
 		"what_text": "At the end of each day write three good things that have happened. These can be as small or big as you like. From 'I ate my favouite tub of ice cream' to 'My best friend got married'", 
 		"sub_heading": "Why",
-		"why_text": "We have a natural tendency focus on what goes wrong in our daily lives. While depressed, we often ruminate on these things.  This exercise helps you create a habit of recognising the good things that may have brought you a quick smile but are all too often forgotten.",
+		"why_text": "We have a natural tendency to focus on what goes wrong in our daily lives. While depressed, we often ruminate on these things.  This exercise helps you create a habit of recognising the good things that may have brought you a quick smile, but are all too often forgotten.",
 		"blank_height": 0.33
 	}
 }

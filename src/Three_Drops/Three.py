@@ -1,21 +1,21 @@
 '''
 Three good thoughts a day mini excercises
+-Note for smoke effect, roughen edges twice, do pixel smear distort and then noisy blur
 
 Added
--read more content
--positioning of elements to match background
--fixed layout
--checked code
+
 
 To Do
--unsure whether text box will work with swiftkey.  says issue is fixed on python for android so may need built to test
+-I think phone will reclaim memory over a day, kill app, and delete current text input text.  But unsure.
+    Check and release a fix if it doesn't
 
 
 Future
--on selection of text box highlight all current text (currenlty selct_all selects text in all textboxes
+-on selection of text box highlight all current text (currenlty select_all selects text in all textboxes
 -Store past days comments?
 -Split read more into seperate screens adding some comments on researched performed
 -have quote change every day?
+-align text to the center of the text input.  As of kivy 1.8.0 this isn't possible for multiline input
 
 Widget Tree
 -Three_Drops
@@ -31,10 +31,10 @@ from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
     BooleanProperty, ReferenceListProperty, StringProperty
-from Library import lib_Button
-from Library import lib_Text
+from library import lib_button
+from library import lib_text
 
-Builder.load_file('Three_Drops/Three.kv') 
+Builder.load_file('three_drops/three.kv') 
 
 app = None
 three_drops = None  
