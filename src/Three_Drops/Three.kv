@@ -42,22 +42,38 @@
 	BoxLayout:
 		size: root.size
 		orientation: 'vertical'	
-		spacing: sp(app.td_layout["start_screen"]["spacing"])
+		
+		###Header
+		BoxLayout:
+			size_hint_x: app.td_layout["start_screen"]["text_width"]
+			size_hint_y: app.td_layout["start_screen"]["header_height"]
+			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+			orientation: 'vertical'
+			SubHeading:
+				size_hint_y: app.td_layout["start_screen"]["title_height"]
+				text: app.td_layout["start_screen"]["title"]
+			NormalText:
+				text: app.td_layout["start_screen"]["description_text"]
+				valign: 'top'
 		
 		###Quote
-		NormalText:
-			size_hint_x: app.td_layout["start_screen"]["quote_size"]
+		BoxLayout: 
+			size_hint_x: app.td_layout["start_screen"]["text_width"]
 			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-			font_size: sp(app.td_layout["start_screen"]["quote_font_size"])
-			text: app.td_layout["start_screen"]["quote"]
-			valign: 'bottom'	
-		NormalText:
-			size_hint: app.td_layout["start_screen"]["quote_name_size"]
-			text: app.td_layout["start_screen"]["quote_name"]
-			valign: 'top'
+			orientation: 'vertical'
+			NormalText:
+				font_size: sp(app.td_layout["start_screen"]["quote_font_size"])
+				text: app.td_layout["start_screen"]["quote"]
+				valign: 'bottom'	
+			NormalText:
+				size_hint_y: app.td_layout["start_screen"]["quote_name_size"]
+				font_size: sp(app.td_layout["start_screen"]["quote_font_size"])
+				text: app.td_layout["start_screen"]["quote_name"]
+				valign: 'top'
 			
 		###Read more button
 		BoxLayout:
+			size_hint_y: app.td_layout["start_screen"]["read_button_height"]	
 			orientation: 'vertical'
 			RelativeLayout:
 				ButtonClicks:
@@ -150,6 +166,10 @@
 			Text_Box:
 				size_hint_x: app.td_layout["three"]["cloud_width_bottom"]
 				hint_text: app.td_layout["three"]["cloud_text_bottom"] 		
+				#once kivy 1.9.0 comes out can make this default behaviour for text input based on keyboard height
+				on_focus:
+					if args[1]: app.ocean_drops.app_switcher.keyboard_up(self)
+					else: app.ocean_drops.app_switcher.keyboard_down()
 			BoxLayout:	
 		
 		###Bottom Filler
@@ -196,7 +216,7 @@
 		
 		###Text			
 		NormalText:
-			font_size: app.td_layout["sent"]["text_size"]
+			font_size: sp(app.td_layout["sent"]["text_size"])
 			color: app.td_layout["sent"]["text_color"]
 			text: app.td_layout["sent"]["text"]
 			

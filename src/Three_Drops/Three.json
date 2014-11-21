@@ -32,22 +32,26 @@
 	
 	"start_screen": {
 		"background": "three_drops/assets_td/images/start_screen_background.png",
-		"spacing": 20,
-	    "quote_size": 0.8,
-	    "quote_font_size": 15,
+		"text_width": 0.8,
+		"header_height": 0.8,
+		"title_height": 0.7,
+		"title": "Three Drops",
+		"description_text": "At the end of each day, write three good things that have happened.",
+	    "quote_font_size": 13,
 	    "quote": "The hard must become habit.\nThe habit must become easy.\nThe easy must become beautiful.",
-	    "quote_name_size": [1, 0.5],
+	    "quote_name_size": 0.6,
 	    "quote_name": "~Doug Henning",
+	    "read_button_height": 1.6,
 	    "read_button_color": [0.2, 0.2, 0.2, 1],
 	    "read_button_text": "Touch to\nRead\nHow This Works",
-	    "blank_height": 0.84
+	    "blank_height": 0.91
 	},
 	
 	"three": {
 		"background": "three_drops/assets_td/images/three_background.png",
-		"cloud_text_top": "1st good thing",
+		"cloud_text_top": "3rd good thing",
 		"cloud_text_middle": "2nd good thing",
-		"cloud_text_bottom": "3rd good thing",
+		"cloud_text_bottom": "1st good thing",
 		"cloud_height": 1,
 		"top_filler": 0.2,
 		"cloud_width_top": 2,

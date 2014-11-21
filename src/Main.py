@@ -1,15 +1,19 @@
 '''
 Main entry point for app
 Contains the main screen manager and main menu
--Note for smoke effect, roughen edges twice, do pixel smear distort and then noisy blur
-
+-use same basic mini_app layout across mini_apps for user continuity
+    -Header, description, quote, read more, links to next page
+    
 Added
 
 
 To Do
 
 
+
 Future
+-Make it so clicking dropdown doesn't highlight the whole screen
+-Add a reading section with condensed overcoming depression book
 -text may struggle on small screens.  Maybe a function to check for certain screen size and make all text smaller if so?
 -when you press app icon (top left) have a drop down list of all the other miniapps OR 
     make it change to a back button which goes back to the main menu
@@ -31,7 +35,7 @@ Widget Tree
        
 '''
 
-__version__ = '1.0.3'
+__version__ = '1.1.1'
 
 import kivy
 kivy.require('1.8.0')
@@ -108,6 +112,8 @@ class MainMenu(Screen):
 class AppSwitcher(ScreenManager):  
     main_menu = ObjectProperty(None)
     
+    app_switcher_pos = ListProperty([])
+    
     #adds each mini app
     def add_mini_apps(self):
         self.main_menu = MainMenu(name = 'MainMenu')
@@ -115,8 +121,23 @@ class AppSwitcher(ScreenManager):
         
         self.add_widget(app.misc)           #adds three dots menu to screen manager
         self.add_widget(app.three_drops)     #adds mini app to screen manager 
-            
-            
+    
+    'Implement properly when kivy 1.9.0 is released'
+    #remember 1.9.0 method won't work on kivy launcher until the launcher is updated to kivy 1.9.0
+    #could implement as its own text_input utility file?
+    #text input will always move to align to top of keyboard if keyboard covers it on screen
+    #called when the keyboard is displayed in three_drops app    
+    def keyboard_up(self, txt_input):
+        self.app_switcher_pos = self.pos
+        y_shift = app.ocean_drops.height * 0.3
+        self.pos = [0, y_shift]
+    
+    'Implement when kivy 1.9.0 is released'
+    #called when the keyboard is dropped in three_drops app
+    def keyboard_down(self): 
+        self.pos = self.app_switcher_pos
+               
+               
 #main screen class contains the title bar and the app_switcher widget
 class OceanDrops(Widget):
     app_switcher = ObjectProperty(None)
@@ -193,7 +214,6 @@ class MainApp(App):
     #keeps the app open if the phone sleeps or switches app
     def on_pause(self):
         return True     #disable when testing on kivy launcher or airdroid screws up
-        #pass
         
     #when app resumes put any data that needs reloaded here (if any)
     def on_resume(self):

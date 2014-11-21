@@ -9,6 +9,7 @@ To Do
 
 
 Future
+-if label is smaller than button a click on the button won't highlight label as well, how to fix?
 -Having seperate button label and image seems complicated
     -See if this can be set in one widget
     
