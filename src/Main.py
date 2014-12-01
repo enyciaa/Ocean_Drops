@@ -8,18 +8,16 @@ Added
 
 
 To Do
-
-
-
-Future
 -Make it so clicking dropdown doesn't highlight the whole screen
 -Add a reading section with condensed overcoming depression book
+-Set notifications that the user can modify
+
+Future
 -text may struggle on small screens.  Maybe a function to check for certain screen size and make all text smaller if so?
 -when you press app icon (top left) have a drop down list of all the other miniapps OR 
     make it change to a back button which goes back to the main menu
 -Make ButtonSwitcher widget do a for loop of adding buttons for each mini_app in the file to shorten code
 -Some kind of progress bar, that makes it so the more you invest (repeat exercises) the more you gain (unlock more exercises?)
--Set notifications that the user can modify
 -Could make the json function better, tried using arrays and for loops, but ran into trouble with using object strings
 
 Widget Tree
@@ -35,10 +33,19 @@ Widget Tree
        
 '''
 
-__version__ = '1.1.1'
+__version__ = '1.1.2'
 
 import kivy
 kivy.require('1.8.0')
+
+'hide on compile'
+#code to set window size on desktop
+from kivy.config import Config
+Config.set('graphics', 'width', '480')
+Config.set('graphics', 'height', '800')
+Config.set('graphics', 'position', 'custom')
+Config.set('graphics', 'top', '35')
+Config.set('graphics', 'left', '5')
 
 from kivy.core.window import Window
 from kivy.app import App
@@ -177,6 +184,7 @@ class MainApp(App):
         self.three_drops = three.ThreeDrops(name = 'ThreeDrops')
         self.three_drops.start()
         
+        #disable on compile
         inspector.create_inspector(Window, self.ocean_drops)
         
         return self.ocean_drops
