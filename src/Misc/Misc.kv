@@ -1,25 +1,81 @@
 #kivy 1.8.0
 
-<About>
-	###Background image
+<Reminders>
+	##Background image
 	canvas.before:
         Rectangle:
-        	source: app.layout["menu_background"]["background"]
+        	source: app.od_layout["menu_background"]["background"]
             size: self.size
             pos: self.pos
+    
+    ##content        
+    BoxLayout
+    	size: root.size
+    	orientation: 'vertical' 
+    	
+	    #Three drops reminder
+	    BoxLayout:
+	    	size_hint_x: app.misc_layout["all_misc"]["text_width"]
+	    	pos_hint: {'center_x': 0.5, 'center_y': 0.5} 
+	    	orientation: 'vertical'   
+		    SubHeading:
+		    	text: app.misc_layout["reminders"]["heading_1"]
+		    NormalText:
+		    	text: app.misc_layout["reminders"]["text_1"]
+		    	valign: 'top'
+		    BoxLayout:
+		    	size_hint_x: 0.5
+		    	pos_hint: {'center_x': 0.5, 'center_y': 0.5} 
+		    	orientation: 'horizontal'
+		    	NormalText:
+		    		text: app.misc_layout["reminders"]["time_text"]
+	    		RelativeLayout:
+					ButtonClicks:
+				        source: app.od_layout["title_drop"]["drop_down_button"]
+				        on_touch_up: 
+							button_identifier = 'but_014'       
+							cond1 = self.collide_point(*args[1].pos)                
+							if cond1: self.click_up(self, button_identifier)  
+			        ButtonLabel:
+						text: root.td_time
+			Image:
+				size_hint_x: app.misc_layout["reminders"]["divide_width"]
+				pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+				source: app.misc_layout["reminders"]["reminder_divide"]
+					
+		##Filler height
+		BoxLayout:
+			size_hint_y: app.misc_layout["reminders"]["filler_height"]
+		    		
+	    ##Blank height
+		BoxLayout:
+			size_hint_y: app.od_layout["menu_background"]["blank_height"]
+				
+		##Footer				
+		Footer:
+			size_hint_y: None
+			height: app.ocean_drops.footer_height
+			text: app.od_layout["menu_background"]["footer"]
             
-    ###Content        
+<About>
+	##Background image
+	canvas.before:
+        Rectangle:
+        	source: app.od_layout["menu_background"]["background"]
+            size: self.size
+            pos: self.pos
+                   
 	BoxLayout:
 		size: root.size
 		orientation: 'vertical'
 		
-		###Content
+		##Content
 		BoxLayout:
-			size_hint_x: app.misc_layout["about"]["text_width"]
+			size_hint_x: app.misc_layout["all_misc"]["text_width"]
 			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 			orientation: 'vertical'
 			
-			##App Goal
+			#App Goal
 			SubHeading:
 				size_hint_y: app.misc_layout["about"]["heading_height"]
 				text: app.misc_layout["about"]["title"]
@@ -28,7 +84,7 @@
 				text: app.misc_layout["about"]["goal_text"]
 				valign: 'top'
 			
-			##Contact
+			#Contact
 			SubHeading:
 				size_hint_y: app.misc_layout["about"]["heading_height"]
 				text: app.misc_layout["about"]["sub_heading"]	
@@ -36,11 +92,12 @@
 				text: app.misc_layout["about"]["contact_text"]
 				valign: 'top'
 						
-		###Blank height
+		##Blank height
 		BoxLayout:
-			size_hint_y: app.layout["menu_background"]["blank_height"]
+			size_hint_y: app.od_layout["menu_background"]["blank_height"]
 				
-		###Footer				
+		##Footer				
 		Footer:
-			size_hint_y: app.layout["menu_background"]["footer_height"]
-			text: app.layout["menu_background"]["footer"]
+			size_hint_y: None
+			height: app.ocean_drops.footer_height
+			text: app.od_layout["menu_background"]["footer"]

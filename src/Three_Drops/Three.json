@@ -23,7 +23,7 @@
 		"text_box_background": [0, 0, 0, 0],
 		"font": "library/assets_lib/fonts/Comfortaa-Regular.ttf",
 		"text_color": [0.2, 0.2, 0.2, 1],
-		"size": 15,
+		"font_size": 15,
 		"line_spacing": 1.3,
 		"hint_text_color": [0.2, 0.2, 0.2, 1]
 		},
@@ -37,7 +37,7 @@
 		"title_height": 0.7,
 		"title": "Three Drops",
 		"description_text": "At the end of each day, write three good things that have happened.",
-	    "quote_font_size": 13,
+	    "quote_font_size": 14,
 	    "quote": "The hard must become habit.\nThe habit must become easy.\nThe easy must become beautiful.",
 	    "quote_name_size": 0.6,
 	    "quote_name": "~Doug Henning",
@@ -70,7 +70,7 @@
 		"background": "three_drops/assets_td/images/sent_background.png",
 		"text": "Sleep Well",
 		"top_filler_size": 1.9,
-		"text_size": 15,
+		"text_size": 18,
 		"text_color": [0.2, 0.2, 0.2, 1],
 		"menu_button_text": "Menu",
 		"blank_height": 1

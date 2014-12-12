@@ -8,13 +8,11 @@ Added
 To Do
 -I think phone will reclaim memory over a day, kill app, and delete current text input text.  But unsure.
     Check and release a fix if it doesn't
--make screen shift up when content is below keyboard - need to wait for kivy 1.9.0 update to use the keyboard_height property
 -on selection of text box highlight all current text (currenlty select_all selects text in all textboxes    
--align text to the center of the text input.  As of kivy 1.8.0 this isn't possible for multiline input (check kivy 1.9.0)
 
 Future
 -make screen shift up when content is below keyboard - need to wait for kivy 1.9.0 update to use the keyboard_height property
--on selection of text box highlight all current text (currenlty select_all selects text in all textboxes
+-align text to the center of the text input.  As of kivy 1.8.0 this isn't possible for multiline input (check kivy 1.9.0)
 -Store past days comments? how to make the past comments UI accessible?
 -add researched performed section to read more
 
@@ -32,8 +30,6 @@ from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
     BooleanProperty, ReferenceListProperty, StringProperty
-from library import lib_button
-from library import lib_text
 
 Builder.load_file('three_drops/three.kv') 
 
@@ -75,12 +71,14 @@ class ThreeDrops(Screen):
         self.title = app.td_layout["whole_section"]["app_title"] 
         self.button_sizing()
         self.button_position()
-        self.open()
+        self.create_sm()
     
+    #sizing for back and next buttons
     def button_sizing(self):
         self.button_width = Window.width / app.td_layout["button_layout"]["width_factor"] 
         self.button_height = app.ocean_drops.title_bar.height * app.td_layout["button_layout"]["height_factor"] 
-        
+    
+    #positioning for back and next buttons    
     def button_position(self):
         self.back_x = Window.width / app.td_layout["button_layout"]["pos_horizontal_factor"] 
         self.back_y = Window.height / app.td_layout["button_layout"]["pos_vertical_factor"] 
@@ -88,7 +86,7 @@ class ThreeDrops(Screen):
         self.next_y = self.back_y
     
     #opens three drops miniapp
-    def open(self):
+    def create_sm(self):
         start_screen = StartScreen(name = 'StartScreen')
         three = Three(name = 'Three')
         sent = Sent(name = 'Sent')   

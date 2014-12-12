@@ -3,7 +3,8 @@ Utility file with chunks of code used in whole package
 Contains all the button templates
 
 Added
-
+-added button 13 (notifications)
+-Made button normal color be taken from buttons original color.
 
 To Do
 -if label is smaller than button a click on the button won't highlight label as well, how to fix?
@@ -11,7 +12,7 @@ To Do
 
 Future
 -Having seperate button label and image seems complicated
-    -See if this can be set in one widget
+    -See if this can be set in one widget (PIL text?)
     
 '''
 
@@ -20,7 +21,7 @@ from kivy.uix.image import Image
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.label import Label
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
-    BooleanProperty, ReferenceListProperty, StringProperty
+    BooleanProperty, ReferenceListProperty, StringProperty    
 
 Builder.load_file('library/lib_button.kv') 
 
@@ -58,11 +59,13 @@ class ButtonLabel(Label, ButtonBehavior):
 class ButtonClicks(Image, ButtonBehavior):  
     pressed_button = ObjectProperty(None, allownone = True)
     pressed_down = BooleanProperty(False)
+    button_color = ListProperty([])
     
     #when button is clicked text becomes translucent        
     def click_down(self, button):
         self.pressed_down = True
         self.pressed_button = button
+        self.button_color = button.color
         button.color = app.lib_button_layout["button_clicks"]["pressed_color"]
     
     #when touch moves off text, text returns to normal color    
@@ -70,14 +73,14 @@ class ButtonClicks(Image, ButtonBehavior):
         if self.pressed_down:
             self.pressed_button = None
             self.pressed_down = False
-            button.color = app.lib_button_layout["button_clicks"]["normal_color"]
+            button.color = self.button_color
             
     #on button click start the game           
     def click_up(self, button, button_identifier):
         self.pressed_down = False
         if button == self.pressed_button:
             self.pressed_button = None
-            button.color = app.lib_button_layout["button_clicks"]["normal_color"]
+            button.color = self.button_color
             run_function = self.button_functions[button_identifier]
             exec run_function
     
@@ -93,7 +96,9 @@ class ButtonClicks(Image, ButtonBehavior):
             "but_009": "app.three_drops.td_manager.current = 'Three'",
             "but_010": "self.but_010()",
             "but_011": "app.three_drops.td_manager.current = 'StartScreen'",
-            "but_012": "self.but_012()"
+            "but_012": "self.but_012()",
+            "but_013": "self.but_013()",
+            "but_014": "app.misc.reminders.time_popup()"
         }
     
     #if multiple functions are run
@@ -101,6 +106,13 @@ class ButtonClicks(Image, ButtonBehavior):
     
     #home button
     def but_001(self):
+        'kills app and cancels alarm manager schedule'
+        'delete this before build'
+        from android_integration import notificaitons
+        scheduler = notificaitons.Scheduler()
+        scheduler.cancel_schedule()
+        app.stop()
+        'delete this before build'
         app.ocean_drops.app_switcher.current = 'MainMenu'
         app.ocean_drops.title_bar.set_main_title()
     
@@ -124,4 +136,15 @@ class ButtonClicks(Image, ButtonBehavior):
     #about button in title drop down
     def but_012(self):
         app.ocean_drops.app_switcher.current = 'Misc'
+        app.misc.misc_manager.current = 'About'
+        title = 'About'
+        app.ocean_drops.title_bar.mini_app_title(title)
         app.ocean_drops.title_bar.title_drop.dismiss()  
+        
+    #reminders button in title drop down
+    def but_013(self):
+        app.ocean_drops.app_switcher.current = 'Misc'
+        app.misc.misc_manager.current = 'Reminders'
+        title = 'Reminders'
+        app.ocean_drops.title_bar.mini_app_title(title)
+        app.ocean_drops.title_bar.title_drop.dismiss()      

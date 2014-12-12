@@ -1,43 +1,4 @@
-{	"mini_app_description": {
-		"size": [0.9, 0.4]	
-	},
-	
-	"button_label": {
-		"size": [0.7, 0.7]
-	},
-	
-	
-	
-	"title_drop": {
-		"drop_down_button": "assets_main/images/drop_down_button.png",
-		"button_height_factor": 0.9,
-    	"button_size_ratio": 2.73,
-    	"button_1_text": "About"
-	},
-  
-	"title_bar": {
-		"background": "assets_main/images/title_bar.png",
-		"home_icon": "assets_main/images/home_icon.png",
-	    "settings_icon": "assets_main/images/settings_icon.png",
-	    "app_icon": "assets_main/images/app_icon.png",
-	    "app_title": "Ocean Drops",
-	    "button_size": 0.15
-	},
-	
-	"buttons_one": {
-		"mini_app_button": "assets_main/images/mini_app_button.png",
-		"button_grid_size": [0.3, 0.3],
-		"top_left_descrip": "[i]Write three good\nthings each day[/i]"
-	},
-	
-	"menu_background": {
-	    "background": "assets_main/images/home_background.png",
-	    "footer": "A Boundless Helping Hand",
-	    "blank_height": 0.17,
-	    "footer_height": 0.2
-	},
-	
-	"ocean_drops": {
-    	"app_switcher_height": 12
-	}    
-}
+{	"edit": {
+		"edit": "edit"
+	}
+}	

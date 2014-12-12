@@ -27,7 +27,15 @@ class SubHeading(Label):
     pass
 
 
+class SubSubHeading(Label):
+    pass
+
+
 class NormalText(Label):
+    pass
+
+
+class MiniNormalText(Label):
     pass
 
 

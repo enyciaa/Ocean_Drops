@@ -1,181 +1,95 @@
 '''
 Main entry point for app
-Contains the main screen manager and main menu
+Does everything needed before the app starts up
+Handles a lot of the behind the scene stuff, setting up app, acting as singleton, setting up services etc.
+
+logic is that the this entry point opens ocean drops (UI manager) which creates title bar, main menu and adds mini app sms to overall sm.
+But this main entry point still acts as the singleton.  (not entirely logical, but any way of seperating this creates complexity)
+
 -use same basic mini_app layout across mini_apps for user continuity
-    -Header, description, quote, read more, links to next page
     
 Added
-
+-moved ocean drops portion to a seperate file
 
 To Do
--Make it so clicking dropdown doesn't highlight the whole screen
--Add a reading section with condensed overcoming depression book
 -Set notifications that the user can modify
 
 Future
--text may struggle on small screens.  Maybe a function to check for certain screen size and make all text smaller if so?
+-different text sizes for different dpi screens?
+-Add a reading section with condensed overcoming depression book
 -when you press app icon (top left) have a drop down list of all the other miniapps OR 
     make it change to a back button which goes back to the main menu
--Make ButtonSwitcher widget do a for loop of adding buttons for each mini_app in the file to shorten code
--Some kind of progress bar, that makes it so the more you invest (repeat exercises) the more you gain (unlock more exercises?)
 -Could make the json function better, tried using arrays and for loops, but ran into trouble with using object strings
 
 Widget Tree
 -App
-  -OceanDrops
-    -TitleBar
-      -TitleDrop
-    -Appswitcher
-        -MainMenu
-            -ButtonSwitcher
-                -Buttons1
-        -Also contains links to all mini app managers
+  -ocean drops
+  -misc
+  -three drops
        
 '''
 
-__version__ = '1.1.2'
+__version__ = '1.1.5'
 
 import kivy
 kivy.require('1.8.0')
 
-'hide on compile'
 #code to set window size on desktop
 from kivy.config import Config
 Config.set('graphics', 'width', '480')
 Config.set('graphics', 'height', '800')
 Config.set('graphics', 'position', 'custom')
 Config.set('graphics', 'top', '35')
-Config.set('graphics', 'left', '5')
+Config.set('graphics', 'left', '1045')
 
+from kivy.utils import platform
 from kivy.core.window import Window
 from kivy.app import App
-from kivy.uix.widget import Widget
-from kivy.uix.dropdown import DropDown
+from kivy.modules import inspector
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty, \
     BooleanProperty, ReferenceListProperty, StringProperty
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.modules import inspector
 import json
+from ocean_drops import ocean_drops 
 from misc import misc
 from three_drops import three
 from library import lib_button
 from library import lib_text
+from library import lib_settime
 
 app = None  
 
-#settings drop down logic
-class TitleDrop(DropDown):
-    button_height = NumericProperty(0)
-    button_width = NumericProperty(0)
-    
-    #sizes the drop down buttons
-    def button_size(self):
-        self.button_height = app.ocean_drops.title_bar.height * app.layout["title_drop"]["button_height_factor"]
-        self.button_width = self.button_height * app.layout["title_drop"]["button_size_ratio"]  #ensures the ratio always matches the image ratio for the button background
-        
-#this bar is always displayed providing a route to settings and the mainmenu
-class TitleBar(Widget):
-    title_drop = ObjectProperty(None)
-    
-    app_title = StringProperty()
-     
-    #changes title back to main title
-    def set_main_title(self):
-        self.app_title = app.layout["title_bar"]["app_title"]
-            
-    #changes the title text when a mini app is opened
-    def mini_app_title(self, mini_title):
-        self.app_title = mini_title
-     
-    #opens drop down for three dots button    
-    def open_drop_down(self, parent_button):
-        self.title_drop = TitleDrop()
-        self.title_drop.button_size()
-        self.title_drop.open(parent_button)   
-       
 
-#contains the first four mini app buttons      
-class ButtonsOne(Screen):   
-    pass
-
-
-#contains all the button grids to the mini apps
-#when there are more button grids try to make screen change happen on swipes
-class ButtonSwitcher(ScreenManager):
-    buttons_one = ObjectProperty(None)
-    
-    #adds each button grid
-    def add_button_grids(self):
-        self.buttons_one = ButtonsOne(name = 'ButtonsOne')
-        self.add_widget(self.buttons_one)
-        
-        
-#the main menu which is the first screen seen and is linked to all the mini apps      
-class MainMenu(Screen): 
-    button_switcher = ObjectProperty(None)
-
-
-#any new mini apps are added to the app switcher
-class AppSwitcher(ScreenManager):  
-    main_menu = ObjectProperty(None)
-    
-    app_switcher_pos = ListProperty([])
-    
-    #adds each mini app
-    def add_mini_apps(self):
-        self.main_menu = MainMenu(name = 'MainMenu')
-        self.add_widget(self.main_menu)
-        
-        self.add_widget(app.misc)           #adds three dots menu to screen manager
-        self.add_widget(app.three_drops)     #adds mini app to screen manager 
-    
-    'Implement properly when kivy 1.9.0 is released'
-    #remember 1.9.0 method won't work on kivy launcher until the launcher is updated to kivy 1.9.0
-    #could implement as its own text_input utility file?
-    #text input will always move to align to top of keyboard if keyboard covers it on screen
-    #called when the keyboard is displayed in three_drops app    
-    def keyboard_up(self, txt_input):
-        self.app_switcher_pos = self.pos
-        y_shift = app.ocean_drops.height * 0.3
-        self.pos = [0, y_shift]
-    
-    'Implement when kivy 1.9.0 is released'
-    #called when the keyboard is dropped in three_drops app
-    def keyboard_down(self): 
-        self.pos = self.app_switcher_pos
-               
-               
-#main screen class contains the title bar and the app_switcher widget
-class OceanDrops(Widget):
-    app_switcher = ObjectProperty(None)
-    title_bar = ObjectProperty(None)
-    
-
-#singleton main class
+#app entry point, setting everything up, handling services and acting as singleton
 class MainApp(App):
     ocean_drops = ObjectProperty(None)
     misc = ObjectProperty(None)
     three_drops = ObjectProperty(None)
+    service = ObjectProperty(None)
 
     #json files
-    layout = ObjectProperty(None)
+    od_layout = ObjectProperty(None)
     misc_layout = ObjectProperty(None)
     td_layout = ObjectProperty(None)
     lib_text_layout = ObjectProperty(None)
     lib_button_layout = ObjectProperty(None)
+    lib_settime_layout = ObjectProperty(None)
     
-    def build(self): 
-        ##definitions
-        lib_button.app = self
-        lib_text.app = self
-        
+    def build(self):         
         self.load_json_files()
+        self.android_integration()
         
-        #main app
+        #app entry point
         global app
         app = self
-        self.ocean_drops = OceanDrops()
-        #three dots extras loading
+        lib_button.app = self
+        lib_text.app = self
+        lib_settime.app = self
+        
+        #ocean drops loading (includes app_switcher - the overall screen manager)
+        ocean_drops.app = self
+        self.ocean_drops = ocean_drops.OceanDrops()
+        self.ocean_drops.start()
+        #settings screens loading
         misc.app = self
         self.misc = misc.MiscScreens(name = 'Misc')
         self.misc.start()
@@ -188,12 +102,13 @@ class MainApp(App):
         inspector.create_inspector(Window, self.ocean_drops)
         
         return self.ocean_drops
+        
     
     #loads json files
     #can make this more sexy somehow
     def load_json_files(self):
-        json_data = open('main.json')
-        self.layout = json.load(json_data)
+        json_data = open('ocean_drops/ocean_drops.json')
+        self.od_layout = json.load(json_data)
         json_data.close()
         
         json_data = open('misc/misc.json')
@@ -211,13 +126,22 @@ class MainApp(App):
         json_data = open('library/lib_text.json')
         self.lib_text_layout = json.load(json_data)
         json_data.close()
+        
+        json_data = open('library/lib_settime.json')
+        self.lib_settime_layout = json.load(json_data)
+        json_data.close()
+    
+    def android_integration(self):
+        if platform == 'android':
+            from android_integration import notificaitons
+            scheduler = notificaitons.Scheduler()
+            scheduler.create_alarm()
+            
            
     #runs straight after build
     def on_start(self):
-        self.ocean_drops.app_switcher.add_mini_apps()      #creates app switcher screen manager
-        self.ocean_drops.app_switcher.main_menu.button_switcher.add_button_grids()  #creates button switcher screen manager
-        self.ocean_drops.title_bar.set_main_title()     #sets title bar text
-        Window.bind(on_keyboard = self.android_back)    
+        self.ocean_drops.after_build()
+        Window.bind(on_keyboard = self.android_back)   
     
     #keeps the app open if the phone sleeps or switches app
     def on_pause(self):

@@ -4,11 +4,11 @@
 
 ###Templates###
 <Mini_App_Description@MiniAppDescription>
-	size_hint: app.layout["mini_app_description"]["size"]
+	size_hint: app.od_layout["mini_app_description"]["size"]
 	pos_hint: {'center_x': 0.5, 'center_y': 0.5}         
 
 <Button_Label@ButtonLabel>   
-	size_hint: app.layout["button_label"]["size"]
+	size_hint: app.od_layout["button_label"]["size"]
 	pos_hint: {'center_x': 0.5, 'center_y': 0.5}          
             
             
@@ -18,17 +18,31 @@
 	auto_width: False
 	width: root.button_width
 	
+	##Reminders button
 	RelativeLayout:
 		size_hint_y: None
         height: root.button_height
 		ButtonClicks:
-	        source: app.layout["title_drop"]["drop_down_button"]
+	        source: app.od_layout["title_drop"]["drop_down_button"]
+	        on_touch_up: 
+				button_identifier = 'but_013'       
+				cond1 = self.collide_point(*args[1].pos)                
+				if cond1: self.click_up(self, button_identifier)  
+        Button_Label:
+			text: app.od_layout["title_drop"]["button_1_text"]
+	
+	##About button		
+	RelativeLayout:
+		size_hint_y: None
+        height: root.button_height
+		ButtonClicks:
+	        source: app.od_layout["title_drop"]["drop_down_button"]
 	        on_touch_up: 
 				button_identifier = 'but_012'       
 				cond1 = self.collide_point(*args[1].pos)                
 				if cond1: self.click_up(self, button_identifier)  
         Button_Label:
-			text: app.layout["title_drop"]["button_1_text"]
+			text: app.od_layout["title_drop"]["button_2_text"]
 			             
 
 <TitleBar> 
@@ -36,35 +50,44 @@
 		#For some reason if Color is removed bits of the background change
 		Color: 
         Rectangle:
-        	source: app.layout["title_bar"]["background"]
+        	source: app.od_layout["title_bar"]["background"]
             size: self.size
             pos: self.pos
 		                      
 	BoxLayout:
 		size: root.size
 		orientation: 'horizontal'
+		
+		#Logo
 		Image:
-			size_hint_x: app.layout["title_bar"]["button_size"]	
-			source: app.layout["title_bar"]["app_icon"]		
+			size_hint_x: app.od_layout["title_bar"]["button_size"]	
+			source: app.od_layout["title_bar"]["app_icon"]			
+		#App title	
 		Heading:
-			text: root.app_title	
+			text: root.app_title
+		#Home button		
 		ButtonClicks:
-			size_hint_x: app.layout["title_bar"]["button_size"]	
-			source: app.layout["title_bar"]["home_icon"]
+			size_hint_x: app.od_layout["title_bar"]["button_size"]	
+			source: app.od_layout["title_bar"]["home_icon"]
 			on_touch_up: 
 				button_identifier = 'but_001'       #The function to run when the button is pressed
 				cond1 = self.collide_point(*args[1].pos)         #code only runs if touch up is inside the button
 				if cond1: self.click_up(self, button_identifier) 
+		#Settings button		
 		ButtonClicks: 
-			size_hint_x: app.layout["title_bar"]["button_size"]	
-			source: app.layout["title_bar"]["settings_icon"]
+			size_hint_x: app.od_layout["title_bar"]["button_size"]	
+			source: app.od_layout["title_bar"]["settings_icon"]
 			on_touch_up: 
 				button_identifier = 'but_002'       
 				cond1 = self.collide_point(*args[1].pos)                
 				if cond1: self.click_up(self, button_identifier) 
-		
-		
-				
+		#If the last widget has its color set (i.e. buttons) it effects the whole screen not just the widget
+		#No idea why!
+		#This fixes it		
+		ButtonClicks: 
+			size_hint_x: 0.000000000000000001
+			
+			 	
 			
 <ButtonsOne>	
 	#Can change this to a grid layout with 4 buttons when there are enough mini apps	
@@ -74,7 +97,7 @@
 		##Three_Drops button
 		RelativeLayout:
 			ButtonClicks:
-				source: app.layout["buttons_one"]["mini_app_button"]
+				source: app.od_layout["buttons_one"]["mini_app_button"]
 				on_touch_up: 
 					button_identifier = 'but_003'
 					cond1 = self.collide_point(*args[1].pos)                
@@ -82,7 +105,7 @@
 			Button_Label:
 				text: app.td_layout["whole_section"]["app_title"] 
 		Mini_App_Description:
-			text: app.layout["buttons_one"]["top_left_descrip"]	
+			text: app.od_layout["buttons_one"]["top_left_descrip"]	
 
 
 
@@ -97,7 +120,7 @@
 	##Background image
 	canvas.before:
         Rectangle:
-        	source: app.layout["menu_background"]["background"]
+        	source: app.od_layout["menu_background"]["background"]
             size: self.size
             pos: self.pos
     
@@ -112,23 +135,25 @@
 				anchor_x: 'center'
 				anchor_y: 'center'
 				BoxLayout:
-					size_hint: app.layout["buttons_one"]["button_grid_size"]
+					size_hint: app.od_layout["buttons_one"]["button_grid_size"]
 					ButtonSwitcher:
 						id: button_switcher_obj
 						
 		#Blank height
 		BoxLayout:
-			size_hint_y: app.layout["menu_background"]["blank_height"]
+			size_hint_y: app.od_layout["menu_background"]["blank_height"]
 				
-		##Footer				
+		#Footer				
 		Footer:
-			size_hint_y: app.layout["menu_background"]["footer_height"]
-			text: app.layout["menu_background"]["footer"]
+			size_hint_y: None
+			height: app.ocean_drops.footer_height
+			text: app.od_layout["menu_background"]["footer"]
 			
 			
 
 <AppSwitcher>
 	transition: sm.FadeTransition()
+			
 			
 			
 <OceanDrops>
@@ -143,6 +168,6 @@
 				id: title_obj 		
 		AppSwitcher:
 			id: app_switcher_obj
-			size_hint_y: app.layout["ocean_drops"]["app_switcher_height"]	
+			size_hint_y: app.od_layout["ocean_drops"]["app_switcher_height"]	
 			
 								

@@ -1,4 +1,17 @@
-{	"about": {
+{	"all_misc": {
+		"text_width": 0.8
+	},
+
+	"reminders": {
+		"reminder_divide": "misc/assets_misc/images/reminder_divide.png",
+		"divide_width": 0.6,
+		"time_text": "Time:",
+		"heading_1": "Three Drops",
+		"text_1": "Set the time for before you go to sleep.",
+		"filler_height": 2.0
+	},
+
+	"about": {
 		"text_width": 0.8,
 		"heading_height": 0.3,
 		"title": "Our Goal",
